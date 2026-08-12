@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { FC, ReactNode } from 'react';
 import {
   FiHeart, FiTrendingUp, FiUsers, FiSearch,
-  FiFilter, FiDownload, FiEdit2, FiMoreVertical,
+  FiDownload, FiEdit2, FiMoreVertical,
   FiPlus, FiExternalLink, FiCheckCircle, FiActivity,
   FiUploadCloud, FiList, FiArrowLeft, FiArrowUpRight
 } from 'react-icons/fi';

@@ -32,6 +32,8 @@ interface ScheduleEvent {
   title: string;
   time: string;
   type: string;
+  desc?: string;
+  images?: string[];
 }
 
 interface OnboardingTask {
@@ -70,10 +72,23 @@ const SuperAdminDashbaord: FC = () => {
     { day: 'F', hrs: 65 }, { day: 'S', hrs: 20 }
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const scheduleEvents: ScheduleEvent[] = [
-    { id: 1, title: 'Weekly Team Sync', time: '8:00 am', type: 'team' },
-    { id: 2, title: 'Onboarding Session', time: '10:00 am', type: 'session' }
+    { 
+      id: 1, 
+      title: 'Weekly Team Sync', 
+      time: '8:00 am', 
+      type: 'team',
+      desc: 'Discuss progress on projects',
+      images: ['https://i.pravatar.cc/100?img=1', 'https://i.pravatar.cc/100?img=2', 'https://i.pravatar.cc/100?img=3'] 
+    },
+    { 
+      id: 2, 
+      title: 'Onboarding Session', 
+      time: '10:00 am', 
+      type: 'session',
+      desc: 'Introduction for new hires',
+      images: ['https://i.pravatar.cc/100?img=4', 'https://i.pravatar.cc/100?img=5']
+    }
   ];
 
   const onboardingTasks: OnboardingTask[] = [
@@ -276,31 +291,30 @@ const SuperAdminDashbaord: FC = () => {
               </div>
 
               <div className="relative z-10 space-y-4">
-                <div className="relative flex items-center gap-4 group">
-                  <div className="absolute -left-6 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white rounded-full border-2 border-gray-200"></div>
-                  <div className="flex-1 flex justify-between items-center pr-4">
-                    <div>
-                      <p className="text-[13px] font-bold text-gray-900 group-hover:text-[#5301ab] transition-colors">Weekly Team Sync</p>
-                      <p className="text-[11px] font-medium text-gray-400">Discuss progress on projects</p>
+                {scheduleEvents.map((event) => (
+                  <div 
+                    key={event.id}
+                    className={`relative ${event.type === 'session' ? 'bg-[#fd5800] rounded-[1.25rem] p-3.5 flex justify-between items-center shadow-md w-full text-white' : 'flex items-center gap-4 group'}`}
+                  >
+                    {event.type === 'team' && (
+                       <div className="absolute -left-6 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white rounded-full border-2 border-gray-200"></div>
+                    )}
+                    
+                    <div className={event.type === 'team' ? "flex-1 flex justify-between items-center pr-4" : ""}>
+                      <div>
+                        <p className={`text-[13px] font-bold ${event.type === 'team' ? 'text-gray-900 group-hover:text-[#5301ab] transition-colors' : ''}`}>{event.title}</p>
+                        <p className={`text-[11px] font-medium mt-0.5 ${event.type === 'team' ? 'text-gray-400' : 'text-white/80'}`}>{event.desc}</p>
+                      </div>
+                      {event.images && (
+                        <div className="flex -space-x-2">
+                          {event.images.map((img, idx) => (
+                            <img key={idx} className={`w-7 h-7 rounded-full ring-2 ${event.type === 'team' ? 'ring-white' : 'ring-[#fd5800]'}`} src={img} alt="" />
+                          ))}
+                        </div>
+                      )}
                     </div>
-                    <div className="flex -space-x-2">
-                      <img className="w-7 h-7 rounded-full ring-2 ring-white" src="https://i.pravatar.cc/100?img=1" alt="" />
-                      <img className="w-7 h-7 rounded-full ring-2 ring-white" src="https://i.pravatar.cc/100?img=2" alt="" />
-                      <img className="w-7 h-7 rounded-full ring-2 ring-white" src="https://i.pravatar.cc/100?img=3" alt="" />
-                    </div>
                   </div>
-                </div>
-
-                <div className="relative bg-[#fd5800] rounded-[1.25rem] p-3.5 flex justify-between items-center shadow-md w-full text-white">
-                  <div>
-                    <p className="text-[13px] font-bold">Onboarding Session</p>
-                    <p className="text-[11px] font-medium text-white/80 mt-0.5">Introduction for new hires</p>
-                  </div>
-                  <div className="flex -space-x-2">
-                    <img className="w-7 h-7 rounded-full ring-2 ring-[#fd5800]" src="https://i.pravatar.cc/100?img=4" alt="" />
-                    <img className="w-7 h-7 rounded-full ring-2 ring-[#fd5800]" src="https://i.pravatar.cc/100?img=5" alt="" />
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
