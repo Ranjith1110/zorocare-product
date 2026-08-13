@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from 'react';
 import {
   FiShield, FiHeart, FiActivity, FiEye, FiTruck,
-  FiMonitor, FiCalendar, FiFileText, FiArrowUpRight,
-  FiChevronDown, FiMoreVertical, FiMaximize2,
+  FiMonitor, FiFileText, FiArrowUpRight,
+  FiChevronDown, FiMaximize2,
   FiPlay, FiPause, FiCheck, FiCheckCircle, FiPhoneCall
 } from 'react-icons/fi';
 import { TbDental } from "react-icons/tb";

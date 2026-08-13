@@ -191,7 +191,7 @@ const UserHistoryCom: FC = () => {
                         </div>
 
                         <div className="relative pl-4 sm:pl-8 ml-2 sm:ml-4 border-l-2 border-gray-100 space-y-8 pb-4">
-                            {timelineEvents.map((event, idx) => (
+                            {timelineEvents.map((event) => (
                                 <div key={event.id} className="relative">
                                     {/* Timeline Node */}
                                     <div className={`absolute -left-[35px] sm:-left-[51px] top-0 w-12 h-12 rounded-full border-4 border-white flex items-center justify-center shadow-sm z-10 ${event.bg} ${event.color}`}>
