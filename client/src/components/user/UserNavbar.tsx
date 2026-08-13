@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FiBell, FiUser, FiMenu, FiX, FiLogOut } from 'react-icons/fi';
+import { FiBell, FiMenu, FiX, FiLogOut } from 'react-icons/fi';
 import { MdSubscriptions } from "react-icons/md";
 
 interface NavLink {
@@ -9,24 +9,23 @@ interface NavLink {
     path: string;
 }
 
-const SuperAdminNavbar: FC = () => {
+const UserNavbar: FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     const navLinks: NavLink[] = [
-        { name: 'Dashboard', path: '/super-admin/dashboard' },
-        { name: 'Administration', path: '/super-admin/administration' },
-        { name: 'Insurance Hub', path: '/super-admin/insurance-hub' },
-        { name: 'Corporate Hub', path: '/super-admin/corporate-hub' },
-        { name: 'User Hub', path: '/super-admin/user-hub' },
-        { name: 'Medical Centers', path: '/super-admin/medical-centers' },
-        { name: 'Service Hub', path: '/super-admin/service-hub' },
+        { name: 'Dashboard', path: '/user/dashboard' },
+        { name: 'My Benefits', path: '/user/benefits' },
+        { name: 'Services', path: '/user/services' },
+        { name: 'My Health', path: '/user/health' },
+        { name: 'My Bookings', path: '/user/bookings' },
+        { name: 'History', path: '/user/history' },
     ];
 
     const handleLogout = () => {
-        localStorage.removeItem('superadmin_auth');
+        localStorage.removeItem('user_auth');
         navigate('/login');
     };
 
@@ -82,7 +81,7 @@ const SuperAdminNavbar: FC = () => {
                         <div className="hidden xl:flex items-center space-x-3">
                             <button className="flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold text-gray-600 bg-white shadow-sm border border-gray-100 transition-all hover:border-[#5301ab]/30 hover:text-[#5301ab]">
                                 <MdSubscriptions className="w-4 h-4" />
-                                Subscriptions
+                                My Plan
                             </button>
                         </div>
 
@@ -94,9 +93,9 @@ const SuperAdminNavbar: FC = () => {
                         <div className="relative hidden lg:block">
                             <button
                                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0"
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0 overflow-hidden"
                             >
-                                <FiUser className="w-5 h-5" />
+                                <img src="https://i.pravatar.cc/300?img=11" alt="Arjun Kumar" className="w-full h-full object-cover" />
                             </button>
 
                             {/* Profile Dropdown */}
@@ -108,8 +107,8 @@ const SuperAdminNavbar: FC = () => {
                                     ></div>
                                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                                         <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                                            <p className="text-[13px] font-bold text-gray-900 truncate">Super Admin</p>
-                                            <p className="text-[11px] font-medium text-gray-500 truncate">admin@zorocare.com</p>
+                                            <p className="text-[13px] font-bold text-gray-900 truncate">Arjun Kumar</p>
+                                            <p className="text-[11px] font-medium text-gray-500 truncate">Innova Technologies</p>
                                         </div>
                                         <button
                                             onClick={handleLogout}
@@ -185,9 +184,16 @@ const SuperAdminNavbar: FC = () => {
                 </div>
 
                 <div className="p-5 border-t border-gray-100 bg-gray-50/80 space-y-3 shrink-0">
+                    <div className="flex items-center gap-3 mb-4 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
+                        <img src="https://i.pravatar.cc/300?img=11" alt="User" className="w-10 h-10 rounded-full object-cover" />
+                        <div>
+                            <p className="text-[14px] font-bold text-gray-900">Arjun Kumar</p>
+                            <p className="text-[11px] font-medium text-gray-500">Innova Technologies</p>
+                        </div>
+                    </div>
                     <button className="flex w-full items-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">
                         <MdSubscriptions className="w-5 h-5 text-gray-400" />
-                        Subscriptions
+                        My Plan
                     </button>
                     <button
                         onClick={handleLogout}
@@ -202,4 +208,4 @@ const SuperAdminNavbar: FC = () => {
     );
 };
 
-export default SuperAdminNavbar;
+export default UserNavbar;
