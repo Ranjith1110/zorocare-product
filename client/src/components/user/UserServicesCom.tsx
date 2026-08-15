@@ -5,11 +5,10 @@ import {
     FiTruck, FiMonitor, FiCalendar, FiPhoneCall, FiCheckCircle,
     FiClock, FiFileText, FiGrid, FiTrendingUp, FiUsers
 } from 'react-icons/fi';
-import { TbDental, TbPill, TbBrain, TbPhysotherapist } from "react-icons/tb";
+import { TbDental, TbPill, TbBrain, TbPhysotherapist, TbBuildingCommunity } from "react-icons/tb";
 
 import Button from '../common/Button';
 
-// --- TypeScript Interfaces to fix the 'any' type errors ---
 interface ServiceFeature {
     icon: ReactNode;
     text: string;
@@ -52,7 +51,6 @@ const UserServicesCom: FC = () => {
         { name: 'Wellness Programs', desc: 'Mind & Body Wellness', icon: <FiHeart className="w-6 h-6" />, color: 'text-purple-500', bg: 'bg-purple-50' },
     ];
 
-    // Applied the strict interface to the array
     const featuredServices: FeaturedService[] = [
         {
             title: 'Instant Doctor Consultation',
@@ -109,11 +107,23 @@ const UserServicesCom: FC = () => {
     return (
         <div className="w-full h-full animate-in fade-in duration-500 pb-10">
 
-            {/* Header Section - Clean Super Admin Style */}
-            <div className="mb-6">
+            {/* Header Section */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
                     <h2 className="font-heading text-2xl lg:text-[28px] font-bold text-gray-900 leading-tight">Services</h2>
                     <p className="text-[13px] text-gray-500 font-medium mt-1">Explore and book quality healthcare services tailored to your needs.</p>
+                </div>
+
+                <div className="flex items-center gap-4 sm:gap-6 bg-white border border-gray-200 p-2 pr-4 rounded-md shadow-sm self-start lg:self-auto">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-md bg-[#5301ab]/10 flex items-center justify-center text-[#5301ab] shrink-0">
+                            <TbBuildingCommunity className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <p className="text-[13px] sm:text-[14px] font-bold text-gray-900 leading-tight">Premium Corporate Plan</p>
+                            <p className="text-[11px] text-gray-500 font-medium mt-0.5">Innova Technologies</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -121,14 +131,14 @@ const UserServicesCom: FC = () => {
 
                 {/* LEFT SIDEBAR: Categories (span 2) */}
                 <div className="hidden xl:flex xl:col-span-2 flex-col gap-6 sticky top-24">
-                    <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-4">
+                    <div className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-4">
                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">Categories</p>
                         <div className="flex flex-col space-y-1">
                             {categories.map((cat) => (
                                 <button
                                     key={cat.name}
                                     onClick={() => setActiveCategory(cat.name)}
-                                    className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-bold transition-all ${activeCategory === cat.name
+                                    className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-[13px] font-bold transition-all ${activeCategory === cat.name
                                         ? 'bg-[#5301ab]/10 text-[#5301ab]'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                         }`}
@@ -140,7 +150,7 @@ const UserServicesCom: FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-purple-50 to-[#5301ab]/5 border border-purple-100 rounded-[2rem] p-6 text-center shadow-sm relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-purple-50 to-[#5301ab]/5 border border-purple-100 rounded-md p-6 text-center shadow-sm relative overflow-hidden">
                         <h3 className="font-bold text-gray-900 text-[15px] mb-2 relative z-10">Need Help Choosing?</h3>
                         <p className="text-[12px] text-gray-600 font-medium mb-5 relative z-10">Our care team is here to help you 24x7.</p>
                         <Button variant="primary" className="w-full !bg-[#5301ab] hover:!bg-[#43008a] !text-[12px] relative z-10">
@@ -154,13 +164,13 @@ const UserServicesCom: FC = () => {
                 <div className="xl:col-span-7 space-y-6">
 
                     {/* Search Banner */}
-                    <div className="bg-gradient-to-br from-[#f8f9ff] to-white p-8 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-[#f8f9ff] to-white p-8 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] relative overflow-hidden">
                         <div className="absolute right-0 top-0 w-64 h-64 bg-purple-100/50 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3"></div>
                         <div className="relative z-10 max-w-2xl">
                             <h1 className="font-heading text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-2">Find the right care, when you need it</h1>
                             <p className="text-[14px] text-gray-600 font-medium mb-6">Book appointments, check availability and access quality healthcare services.</p>
 
-                            <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-gray-200 focus-within:border-[#5301ab]/50 focus-within:ring-4 focus-within:ring-[#5301ab]/10 transition-all">
+                            <div className="flex items-center gap-3 bg-white p-2 rounded-md shadow-sm border border-gray-200 focus-within:border-[#5301ab]/50 focus-within:ring-4 focus-within:ring-[#5301ab]/10 transition-all">
                                 <div className="flex-1 relative flex items-center pl-3">
                                     <FiSearch className="w-5 h-5 text-gray-400 absolute left-3" />
                                     <input
@@ -175,27 +185,32 @@ const UserServicesCom: FC = () => {
                             <div className="flex flex-wrap items-center gap-2 mt-5">
                                 <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">Popular Searches:</span>
                                 {['General Physician', 'Full Body Checkup', 'Dental Checkup', 'Eye Checkup'].map((tag, idx) => (
-                                    <span key={idx} className="bg-white border border-gray-200 text-gray-600 text-[11px] font-bold px-3 py-1.5 rounded-lg cursor-pointer hover:border-[#5301ab] hover:text-[#5301ab] transition-colors shadow-sm">
+                                    <span key={idx} className="bg-white border border-gray-200 text-gray-600 text-[11px] font-bold px-3 py-1.5 rounded-md cursor-pointer hover:border-[#5301ab] hover:text-[#5301ab] transition-colors shadow-sm">
                                         {tag}
                                     </span>
                                 ))}
                             </div>
                         </div>
+
+                        {/* 3D App Dummy Image */}
+                        <div className="absolute right-0 lg:-right-4 top-1/2 transform -translate-y-1/2 w-[35%] lg:w-[40%] hidden sm:flex justify-end pointer-events-none drop-shadow-2xl">
+                            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/medical-app-4993427-4161758.png" alt="Medical App 3D" className="w-[120%] max-w-[320px] object-contain" />
+                        </div>
                     </div>
 
                     {/* Explore by Category */}
-                    <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8">
+                    <div className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="font-bold text-gray-900 text-[18px]">Explore by Category</h3>
                             <a href="#" className="text-[13px] font-bold text-[#5301ab] hover:underline flex items-center gap-1">View All Categories <FiArrowRight /></a>
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                             {exploreCategories.map((cat, idx) => (
-                                <div key={idx} className="flex flex-col items-center text-center p-4 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all cursor-pointer group">
-                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${cat.bg} ${cat.color}`}>
-                                        {cat.icon}
+                                <div key={idx} className="bg-white border border-gray-100 rounded-md p-5 shadow-sm min-w-[150px] flex flex-col items-center justify-center text-center gap-2 shrink-0 hover:shadow-md transition-shadow cursor-pointer group">
+                                    <div className={`w-14 h-14 rounded-md flex items-center justify-center mb-1 group-hover:scale-110 transition-transform ${cat.bg} ${cat.color}`}>
+                                        <div className="w-6 h-6">{cat.icon}</div>
                                     </div>
-                                    <h4 className="font-bold text-gray-900 text-[13px] leading-tight mb-1">{cat.name}</h4>
+                                    <h4 className="font-bold text-[13px] text-gray-900 leading-tight mb-1">{cat.name}</h4>
                                     <p className="text-[10px] font-medium text-gray-500 leading-tight">{cat.desc}</p>
                                 </div>
                             ))}
@@ -206,25 +221,31 @@ const UserServicesCom: FC = () => {
                     <div>
                         <div className="flex items-center justify-between mb-4 px-2">
                             <h3 className="font-bold text-gray-900 text-[16px]">Featured Services</h3>
-                            <a href="#" className="text-[13px] font-bold text-[#5301ab] hover:underline flex items-center gap-1">View All Services <FiArrowRight className="w-3.5 h-3.5" /></a>
+                            <a href="#" className="text-[13px] font-bold text-[#5301ab] hover:underline flex items-center gap-1">View All Services <FiArrowRight /></a>
                         </div>
-                        <div className="flex overflow-x-auto gap-5 pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-5">
                             {featuredServices.map((service, idx) => (
-                                <div key={idx} className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col min-w-[260px] max-w-[280px] shrink-0 overflow-hidden hover:shadow-md transition-shadow group">
-                                    <div className="relative h-40 w-full overflow-hidden bg-gray-100">
+                                <div key={idx} className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col overflow-hidden group hover:shadow-md transition-shadow">
+                                    {/* Image Container */}
+                                    <div className="relative h-[140px] w-full overflow-hidden">
                                         <img src={service.image} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                        {service.isMostBooked && (
-                                            <span className="absolute top-3 right-3 bg-[#5301ab] text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                                        {service.sponsored && (
+                                            <span className="absolute top-3 right-3 bg-[#5301ab] text-white px-2.5 py-1 rounded-md text-[10px] font-bold shadow-md">
                                                 Most Booked
                                             </span>
                                         )}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     </div>
-                                    <div className="p-5 flex flex-col flex-1">
-                                        <h4 className="font-bold text-[15px] text-gray-900 leading-tight mb-1">{service.title}</h4>
-                                        <p className="text-[12px] text-gray-500 font-medium mb-4">{service.category}</p>
 
-                                        <div className="flex items-center gap-4 mb-5">
-                                            {service.features.map((feat: ServiceFeature, fIdx: number) => (
+                                    {/* Content */}
+                                    <div className="p-4 flex flex-col flex-1">
+                                        <h4 className="font-bold text-[14px] text-gray-900 leading-tight mb-1 truncate" title={service.title}>{service.title}</h4>
+                                        <p className="text-[11px] text-gray-500 font-medium mb-3">{service.category}</p>
+
+                                        {/* Icons Row */}
+                                        <div className="flex items-center gap-4 mb-4">
+                                            {service.features.map((feat, fIdx) => (
                                                 <div key={fIdx} className="flex items-center gap-1.5 text-[11px] font-medium text-gray-600">
                                                     <span className="text-gray-400">{feat.icon}</span>
                                                     {feat.text}
@@ -232,14 +253,14 @@ const UserServicesCom: FC = () => {
                                             ))}
                                         </div>
 
-                                        <div className="mt-auto flex items-center justify-between gap-4 mb-4 border-t border-gray-50 pt-3">
+                                        <div className="mt-auto flex items-center justify-between border-t border-gray-50 pt-3 mb-3">
                                             <div className="flex items-center gap-2">
-                                                <span className="font-bold text-[18px] text-gray-900 leading-none">{service.price}</span>
-                                                {service.sponsored && <span className="bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded text-[9px] uppercase font-bold tracking-wider">• Sponsored</span>}
+                                                <span className="font-heading font-bold text-[18px] text-gray-900 leading-none">{service.price}</span>
+                                                {service.sponsored && <span className="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[9px] uppercase font-bold tracking-wider">• Sponsored</span>}
                                             </div>
                                         </div>
 
-                                        <Button variant="secondary" className="w-full !border-[#5301ab]/20 !text-[#5301ab] hover:!bg-[#5301ab]/5 transition-colors">
+                                        <Button variant="secondary" className="w-full !py-2 !text-[12px] !border-[#5301ab]/20 !text-[#5301ab] hover:!bg-[#5301ab]/5 transition-colors">
                                             Book Now
                                         </Button>
                                     </div>
@@ -249,10 +270,10 @@ const UserServicesCom: FC = () => {
                     </div>
 
                     {/* Trust Markers */}
-                    <div className="bg-white p-5 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-white p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] grid grid-cols-2 md:grid-cols-4 gap-4">
                         {trustMarkers.map((marker, idx) => (
                             <div key={idx} className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 p-3">
-                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${marker.bg}`}>
+                                <div className={`w-10 h-10 rounded-md flex items-center justify-center shrink-0 ${marker.bg}`}>
                                     {marker.icon}
                                 </div>
                                 <div>
@@ -268,17 +289,70 @@ const UserServicesCom: FC = () => {
                 {/* ================= RIGHT SIDEBAR ================= */}
                 <div className="xl:col-span-3 space-y-6">
 
+                    {/* My Available Benefits */}
+                    <div className="bg-white p-6 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+                        <div className="flex items-center justify-between mb-5 border-b border-gray-50 pb-3">
+                            <h3 className="font-bold text-gray-900 text-[15px]">My Available Benefits</h3>
+                            <a href="#" className="text-[12px] font-bold text-[#5301ab] flex items-center gap-1 hover:underline">View Details <FiArrowRight className="w-3.5 h-3.5" /></a>
+                        </div>
+
+                        <div className="space-y-4 mb-6">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-md bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0 border border-emerald-100">
+                                    <FiCheckCircle className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <p className="font-heading text-[22px] font-bold text-gray-900 leading-none mb-1">12</p>
+                                    <p className="text-[12px] font-medium text-gray-500">Services Available</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-md bg-[#5301ab]/10 text-[#5301ab] flex items-center justify-center shrink-0 border border-[#5301ab]/20">
+                                    <FiActivity className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <p className="font-heading text-[22px] font-bold text-gray-900 leading-none mb-1">₹0</p>
+                                    <p className="text-[12px] font-medium text-gray-500">Sponsored Services</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <Button variant="primary" className="w-full !bg-[#5301ab] hover:!bg-[#43008a] shadow-md shadow-[#5301ab]/20">
+                            Explore My Benefits
+                        </Button>
+                    </div>
+
+                    {/* Emergency Support Banner */}
+                    <div className="bg-gradient-to-br from-red-50 to-red-100/50 p-6 rounded-md border border-red-100 shadow-sm relative overflow-hidden text-left">
+                        <div className="relative z-10 w-[65%]">
+                            <h3 className="font-bold text-gray-900 text-[15px] mb-2">Need Emergency Help?</h3>
+                            <p className="text-[11px] text-gray-600 mb-5 leading-relaxed font-medium">We are available 24x7 for you and your family.</p>
+                            <div className="space-y-2.5">
+                                <button className="w-full bg-red-600 hover:bg-red-700 text-white text-[12px] font-bold py-2.5 rounded-md shadow-md shadow-red-500/20 transition-colors flex items-center justify-center gap-2">
+                                    <FiTruck className="w-4 h-4" /> Call Ambulance
+                                </button>
+                                <button className="w-full bg-white border border-red-200 text-red-600 hover:bg-red-50 text-[12px] font-bold py-2.5 rounded-md transition-colors flex items-center justify-center gap-2">
+                                    <FiPhoneCall className="w-4 h-4" /> Emergency Support
+                                </button>
+                            </div>
+                        </div>
+                        <div className="absolute -right-12 bottom-1/2 transform translate-y-1/2 w-48 h-auto opacity-95 drop-shadow-xl z-0 pointer-events-none">
+                            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/ambulance-4493309-3733076.png" alt="Ambulance 3D" className="w-full h-full object-contain scale-x-[-1]" />
+                        </div>
+                    </div>
+
                     {/* Popular This Month */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+                    <div className="bg-white p-6 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
                         <div className="flex items-center justify-between mb-5 border-b border-gray-50 pb-3">
                             <h3 className="font-bold text-gray-900 text-[15px]">Popular This Month</h3>
-                            <a href="#" className="text-[12px] font-bold text-[#5301ab] hover:underline flex items-center gap-1">View All <FiArrowRight className="w-3.5 h-3.5" /></a>
+                            <a href="#" className="text-[12px] font-bold text-[#5301ab] flex items-center gap-1 hover:underline">View All <FiArrowRight className="w-3.5 h-3.5" /></a>
                         </div>
                         <div className="space-y-4">
                             {popularServices.map((service, idx) => (
-                                <div key={idx} className="flex items-center gap-3 group cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded-xl transition-colors">
+                                <div key={idx} className="flex items-center gap-3 group cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded-md transition-colors">
                                     <span className="text-[14px] font-bold text-gray-300 w-4 text-center">{service.rank}</span>
-                                    <div className={`w-10 h-10 rounded-[1rem] flex items-center justify-center shrink-0 ${service.bg} ${service.color}`}>
+                                    <div className={`w-10 h-10 rounded-md flex items-center justify-center shrink-0 ${service.bg} ${service.color}`}>
                                         <div className="w-5 h-5">{service.icon}</div>
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -294,7 +368,7 @@ const UserServicesCom: FC = () => {
                     </div>
 
                     {/* Can't Find What You Need */}
-                    <div className="bg-gray-50 border border-gray-200 rounded-[2rem] p-6 text-center shadow-sm relative overflow-hidden flex flex-col items-start justify-center">
+                    <div className="bg-gray-50 border border-gray-200 rounded-md p-6 text-center shadow-sm relative overflow-hidden flex flex-col items-start justify-center">
                         <div className="relative z-10 w-[60%] text-left">
                             <h3 className="font-bold text-gray-900 text-[15px] mb-1.5">Can't find what you need?</h3>
                             <p className="text-[11px] text-gray-600 font-medium mb-4 leading-relaxed">Let us help you find the right care.</p>
@@ -302,21 +376,8 @@ const UserServicesCom: FC = () => {
                                 Request a Service
                             </Button>
                         </div>
-                    </div>
-
-                    {/* Emergency Support Banner */}
-                    <div className="bg-gradient-to-br from-red-50 to-red-100/50 p-6 rounded-[2rem] border border-red-100 shadow-sm relative overflow-hidden text-left">
-                        <div className="relative z-10 w-[65%]">
-                            <h3 className="font-bold text-gray-900 text-[15px] mb-2">Need Emergency Help?</h3>
-                            <p className="text-[11px] text-gray-600 mb-5 leading-relaxed font-medium">We are available 24x7 for you and your family.</p>
-                            <div className="space-y-2.5">
-                                <button className="w-full bg-red-600 hover:bg-red-700 text-white text-[12px] font-bold py-2.5 rounded-xl shadow-md shadow-red-500/20 transition-colors flex items-center justify-center gap-2">
-                                    <FiTruck className="w-4 h-4" /> Call Ambulance
-                                </button>
-                                <button className="w-full bg-white border border-red-200 text-red-600 hover:bg-red-50 text-[12px] font-bold py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
-                                    <FiPhoneCall className="w-4 h-4" /> Emergency Support
-                                </button>
-                            </div>
+                        <div className="absolute -right-4 bottom-0 w-[45%] pointer-events-none">
+                            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/customer-service-girl-5437899-4551717.png" alt="Support" className="w-full h-auto drop-shadow-lg" />
                         </div>
                     </div>
 

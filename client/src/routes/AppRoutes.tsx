@@ -5,6 +5,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 // Layouts
 import SuperAdminLayout from '../layouts/SuperAdminLayout';
 import UserLayout from '../layouts/UserLayout';
+import InsuranceLayout from '../layouts/InsuranceLayout';
 
 // Super Admin Pages
 import SuperAdminDashbaord from '../pages/superadmin/SuperAdminDashbaord';
@@ -23,6 +24,15 @@ import UserServices from '../pages/user/UserServices';
 import UserMyHealth from '../pages/user/UserMyHealth';
 import UserBookings from '../pages/user/UserBookings';
 import UserHistory from '../pages/user/UserHistory';
+
+// Insurance Pages
+import InsuranceDasboard from '../pages/insurance/InsuranceDasboard';
+import InsuranceCorporateManagement from '../pages/insurance/InsuranceCorporateManagement';
+import InsuranceUserManagement from '../pages/insurance/InsuranceUserManagement';
+import InsuranceSponsoredServices from '../pages/insurance/InsuranceSponsoredServices';
+import InsuranceHealthcheckups from '../pages/insurance/InsuranceHealthcheckups';
+import InsuranceOtherServices from '../pages/insurance/InsuranceOtherServices';
+import InsuranceHistory from '../pages/insurance/InsuranceHistory';
 
 export const AppRoutes: FC = () => {
   return (
@@ -52,7 +62,6 @@ export const AppRoutes: FC = () => {
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
-
         <Route path="dashboard" element={<SuperAdminDashbaord />} />
         <Route path="administration" element={<SuperAdminAdministration />} />
         <Route path="insurance-hub" element={<SuperAdminInsuranceHub />} />
@@ -70,13 +79,29 @@ export const AppRoutes: FC = () => {
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
-
         <Route path="dashboard" element={<UserDashboard />} />
         <Route path="benefits" element={<UserMyBenefits />} />
         <Route path="services" element={<UserServices />} />
         <Route path="health" element={<UserMyHealth />} />
         <Route path="bookings" element={<UserBookings />} />
         <Route path="history" element={<UserHistory />} />
+      </Route>
+
+      {/* Insurance Broker Routes */}
+      <Route
+        path="/insurance"
+        element={
+          <InsuranceLayout />
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<InsuranceDasboard />} />
+        <Route path="corporate-management" element={<InsuranceCorporateManagement />} />
+        <Route path="user-management" element={<InsuranceUserManagement />} />
+        <Route path="sponsored-services" element={<InsuranceSponsoredServices />} />
+        <Route path="healthcheckups" element={<InsuranceHealthcheckups />} />
+        <Route path="other-services" element={<InsuranceOtherServices />} />
+        <Route path="history" element={<InsuranceHistory />} />
       </Route>
 
     </Routes>

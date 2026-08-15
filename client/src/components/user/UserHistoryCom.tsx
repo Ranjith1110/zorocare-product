@@ -128,26 +128,26 @@ const UserHistoryCom: FC = () => {
         <div className="w-full space-y-6 animate-in fade-in duration-500 pb-10">
 
             {/* ================= HEADER SECTION ================= */}
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-6">
                 <div>
-                    <h2 className="font-heading text-3xl lg:text-[32px] font-bold text-gray-900 leading-tight mb-1.5">History</h2>
-                    <p className="text-[14px] text-gray-500 font-medium">View your complete medical history, past appointments, and health records.</p>
+                    <h2 className="font-heading text-2xl lg:text-[28px] font-bold text-gray-900 leading-tight mb-1">History</h2>
+                    <p className="text-[13px] text-gray-500 font-medium">View your complete medical history, past appointments, and health records.</p>
                 </div>
 
-                <div className="flex items-center gap-5 sm:gap-6 bg-white border border-gray-200 p-2 pr-4 rounded-[1.25rem] shadow-sm self-start lg:self-auto">
+                <div className="flex items-center gap-4 sm:gap-6 bg-white border border-gray-200 p-2 pr-4 rounded-md shadow-sm self-start lg:self-auto">
                     <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-[#5301ab]/10 flex items-center justify-center text-[#5301ab] shrink-0">
-                            <TbBuildingCommunity className="w-6 h-6" />
+                        <div className="w-10 h-10 rounded-md bg-[#5301ab]/10 flex items-center justify-center text-[#5301ab] shrink-0">
+                            <TbBuildingCommunity className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-[14px] font-bold text-gray-900 leading-tight">Premium Corporate Plan</p>
-                            <p className="text-[12px] text-gray-500 font-medium mt-0.5">Innova Technologies</p>
+                            <p className="text-[13px] sm:text-[14px] font-bold text-gray-900 leading-tight">Premium Corporate Plan</p>
+                            <p className="text-[11px] text-gray-500 font-medium mt-0.5">Innova Technologies</p>
                         </div>
                     </div>
 
                     <div className="w-[1px] h-10 bg-gray-200 hidden sm:block"></div>
 
-                    <Button variant="secondary" className="!bg-white !border-gray-200 !text-gray-700 hover:!bg-gray-50 !rounded-[0.85rem] !px-5 !py-2 !text-[13px] font-bold shrink-0 hidden sm:flex" icon={<FiDownload className="w-4 h-4" />}>
+                    <Button variant="secondary" className="!bg-white !border-gray-200 !text-gray-700 hover:!bg-gray-50 !rounded-md !px-5 !py-2 !text-[13px] font-bold shrink-0 hidden sm:flex" icon={<FiDownload className="w-4 h-4" />}>
                         Export All
                     </Button>
                 </div>
@@ -156,9 +156,9 @@ const UserHistoryCom: FC = () => {
             {/* ================= TOP KPIs ================= */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
                 {kpiData.map((kpi, index) => (
-                    <div key={index} className="bg-white p-5 rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-center hover:shadow-md transition-shadow">
+                    <div key={index} className="bg-white p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-center hover:shadow-md transition-shadow">
                         <div className="flex items-center gap-4">
-                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${kpi.bg} ${kpi.color}`}>
+                            <div className={`w-12 h-12 rounded-md flex items-center justify-center shrink-0 ${kpi.bg} ${kpi.color}`}>
                                 {kpi.icon}
                             </div>
                             <div>
@@ -177,16 +177,16 @@ const UserHistoryCom: FC = () => {
                 <div className="xl:col-span-8 space-y-6">
 
                     {/* Medical History Timeline */}
-                    <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8">
+                    <div className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                             <div>
                                 <h3 className="font-bold text-gray-900 text-[18px]">Medical Timeline</h3>
                                 <p className="text-[12px] text-gray-500 font-medium mt-1">Chronological view of your health events.</p>
                             </div>
-                            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 p-1.5 rounded-xl">
-                                <button className="px-4 py-1.5 rounded-lg bg-white text-[#5301ab] text-[12px] font-bold shadow-sm">All</button>
-                                <button className="px-4 py-1.5 rounded-lg text-gray-500 hover:text-gray-900 text-[12px] font-bold transition-colors">Consultations</button>
-                                <button className="px-4 py-1.5 rounded-lg text-gray-500 hover:text-gray-900 text-[12px] font-bold transition-colors">Labs</button>
+                            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 p-1.5 rounded-md">
+                                <button className="px-4 py-1.5 rounded-md bg-white text-[#5301ab] text-[12px] font-bold shadow-sm">All</button>
+                                <button className="px-4 py-1.5 rounded-md text-gray-500 hover:text-gray-900 text-[12px] font-bold transition-colors">Consultations</button>
+                                <button className="px-4 py-1.5 rounded-md text-gray-500 hover:text-gray-900 text-[12px] font-bold transition-colors">Labs</button>
                             </div>
                         </div>
 
@@ -199,7 +199,7 @@ const UserHistoryCom: FC = () => {
                                     </div>
 
                                     {/* Event Content */}
-                                    <div className="bg-gray-50/50 border border-gray-100 rounded-[1.5rem] p-5 hover:bg-white hover:shadow-md transition-all group">
+                                    <div className="bg-gray-50/50 border border-gray-100 rounded-md p-5 hover:bg-white hover:shadow-md transition-all group">
                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                                             <div>
                                                 <h4 className="font-bold text-[15px] text-gray-900 leading-tight group-hover:text-[#5301ab] transition-colors">{event.title}</h4>
@@ -209,11 +209,11 @@ const UserHistoryCom: FC = () => {
                                                 </div>
                                             </div>
                                             <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-1 text-left sm:text-right">
-                                                <span className="text-[12px] font-bold text-gray-900 bg-white border border-gray-200 px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1.5"><FiCalendar className="text-[#5301ab] w-3.5 h-3.5" /> {event.date}</span>
+                                                <span className="text-[12px] font-bold text-gray-900 bg-white border border-gray-200 px-2.5 py-1 rounded-md shadow-sm flex items-center gap-1.5"><FiCalendar className="text-[#5301ab] w-3.5 h-3.5" /> {event.date}</span>
                                                 <span className="text-[11px] font-medium text-gray-500">{event.time}</span>
                                             </div>
                                         </div>
-                                        <p className="text-[13px] text-gray-600 leading-relaxed bg-white p-3 rounded-xl border border-gray-100/80">
+                                        <p className="text-[13px] text-gray-600 leading-relaxed bg-white p-3 rounded-md border border-gray-100/80">
                                             {event.description}
                                         </p>
                                     </div>
@@ -226,7 +226,7 @@ const UserHistoryCom: FC = () => {
                     </div>
 
                     {/* Past Consultations Table */}
-                    <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] overflow-hidden">
+                    <div className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] overflow-hidden">
                         <div className="p-6 md:p-8 border-b border-gray-50 flex items-center justify-between">
                             <div>
                                 <h3 className="font-bold text-gray-900 text-[18px]">Past Consultations</h3>
@@ -252,7 +252,7 @@ const UserHistoryCom: FC = () => {
                                             <td className="px-6 py-4 whitespace-nowrap text-[12px] font-bold text-gray-600">{consult.date}</td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${consult.bg} ${consult.color}`}>
+                                                    <div className={`w-9 h-9 rounded-md flex items-center justify-center shrink-0 ${consult.bg} ${consult.color}`}>
                                                         {consult.icon}
                                                     </div>
                                                     <div>
@@ -282,10 +282,10 @@ const UserHistoryCom: FC = () => {
                 <div className="xl:col-span-4 space-y-6">
 
                     {/* Search & Filter Widget */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+                    <div className="bg-white p-6 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
                         <h3 className="font-bold text-gray-900 text-[16px] mb-4">Search History</h3>
                         <div className="space-y-3">
-                            <div className="flex items-center gap-3 bg-gray-50 p-2.5 rounded-xl border border-gray-200 focus-within:border-[#5301ab]/50 focus-within:ring-2 focus-within:ring-[#5301ab]/10 transition-all">
+                            <div className="flex items-center gap-3 bg-gray-50 p-2.5 rounded-md border border-gray-200 focus-within:border-[#5301ab]/50 focus-within:ring-2 focus-within:ring-[#5301ab]/10 transition-all">
                                 <FiSearch className="text-gray-400 w-4 h-4 ml-1" />
                                 <input
                                     type="text"
@@ -302,7 +302,7 @@ const UserHistoryCom: FC = () => {
                     </div>
 
                     {/* My Medical Records */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+                    <div className="bg-white p-6 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
                         <div className="flex items-center justify-between mb-5 border-b border-gray-50 pb-3">
                             <div>
                                 <h3 className="font-bold text-gray-900 text-[16px]">Medical Records</h3>
@@ -313,9 +313,9 @@ const UserHistoryCom: FC = () => {
 
                         <div className="space-y-3">
                             {medicalRecords.map((record) => (
-                                <div key={record.id} className="flex items-center justify-between p-3 rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all group">
+                                <div key={record.id} className="flex items-center justify-between p-3 rounded-md border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all group">
                                     <div className="flex items-center gap-3 min-w-0">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${record.bg} ${record.color}`}>
+                                        <div className={`w-10 h-10 rounded-md flex items-center justify-center shrink-0 ${record.bg} ${record.color}`}>
                                             <FiPaperclip className="w-4 h-4" />
                                         </div>
                                         <div className="min-w-0 pr-2">
@@ -338,7 +338,7 @@ const UserHistoryCom: FC = () => {
                     </div>
 
                     {/* Support Banner */}
-                    <div className="bg-gradient-to-br from-[#f8f9ff] to-purple-50 p-6 rounded-[2rem] border border-purple-100/50 shadow-sm relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-[#f8f9ff] to-purple-50 p-6 rounded-md border border-purple-100/50 shadow-sm relative overflow-hidden">
                         <div className="relative z-10 w-[65%]">
                             <h3 className="font-bold text-gray-900 text-[15px] mb-2">Need Missing Records?</h3>
                             <p className="text-[11px] text-gray-600 mb-5 leading-relaxed font-medium">If you can't find a past report, our team can help retrieve it for you.</p>

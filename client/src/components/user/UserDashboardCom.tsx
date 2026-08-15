@@ -69,18 +69,18 @@ const UserDashboardCom: FC = () => {
   ];
 
   const scheduleEvents: ScheduleEvent[] = [
-    { 
-      id: 1, 
-      title: 'Speciality Consultation', 
-      time: '10:30 am', 
+    {
+      id: 1,
+      title: 'Speciality Consultation',
+      time: '10:30 am',
       type: 'team',
       desc: 'Dr. Priya Sharma • Cardiologist',
-      images: ['https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100'] 
+      images: ['https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100']
     },
-    { 
-      id: 2, 
-      title: 'Dental Checkup', 
-      time: 'Completed', 
+    {
+      id: 2,
+      title: 'Dental Checkup',
+      time: 'Completed',
       type: 'session',
       desc: 'Smile Craft Dental',
     }
@@ -123,7 +123,7 @@ const UserDashboardCom: FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 items-center bg-white p-4 rounded-3xl border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 items-center bg-white p-4 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
         {topMetrics.map((metric, idx) => (
           <div key={idx} className="flex items-center justify-between w-full px-2">
             <span className="text-[13px] font-semibold text-gray-500 w-28">{metric.label}</span>
@@ -137,9 +137,9 @@ const UserDashboardCom: FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
         {kpiData.map((kpi, index) => (
-          <div key={index} className="bg-white p-5 rounded-3xl border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer">
+          <div key={index} className="bg-white p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer">
             <div className="flex items-start gap-4">
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${kpi.color === 'purple' ? 'bg-[#5301ab]/10 text-[#5301ab]' : 'bg-[#fd5800]/10 text-[#fd5800]'}`}>
+              <div className={`w-12 h-12 rounded-md flex items-center justify-center shrink-0 ${kpi.color === 'purple' ? 'bg-[#5301ab]/10 text-[#5301ab]' : 'bg-[#fd5800]/10 text-[#fd5800]'}`}>
                 {kpi.icon}
               </div>
               <div className="space-y-1">
@@ -158,12 +158,12 @@ const UserDashboardCom: FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
         <div className="lg:col-span-3 space-y-5">
-          <div className="bg-gradient-to-br from-[#7315e0] to-[#5301ab] p-5 rounded-[2rem] border border-[#5301ab]/40 shadow-lg relative overflow-hidden flex flex-col h-[230px]">
+          <div className="bg-gradient-to-br from-[#7315e0] to-[#5301ab] p-5 rounded-md border border-[#5301ab]/40 shadow-lg relative overflow-hidden flex flex-col h-[230px]">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div className="flex-1 flex items-end justify-center pb-2">
-              <img src="https://i.pravatar.cc/300?img=11" alt="Arjun Kumar" className="w-32 h-32 object-cover rounded-t-[2.5rem] rounded-b-xl border-2 border-white/20 drop-shadow-2xl z-10" />
+              <img src="https://i.pravatar.cc/300?img=11" alt="Arjun Kumar" className="w-32 h-32 object-cover rounded-t-md rounded-b-md border-2 border-white/20 drop-shadow-2xl z-10" />
             </div>
-            <div className="relative z-20 flex items-center justify-between">
+            <div className="relative z-20 flex items-center justify-between mt-2">
               <div>
                 <h3 className="font-heading text-[16px] font-bold text-white leading-tight">Arjun Kumar</h3>
                 <p className="text-[11px] text-white/70 font-medium">Innova Technologies</p>
@@ -174,20 +174,20 @@ const UserDashboardCom: FC = () => {
             </div>
           </div>
 
-          <div className="bg-white p-3 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] space-y-1">
-            <button className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 text-left transition-colors">
+          <div className="bg-white p-3 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] space-y-1">
+            <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50 text-left transition-colors">
               <span className="text-[13px] font-semibold text-gray-700">Sponsored Services</span>
               <FiChevronDown className="w-4 h-4 text-gray-400" />
             </button>
 
-            <div className="p-3 rounded-2xl bg-white border border-gray-100 shadow-sm space-y-3">
+            <div className="p-3 rounded-md bg-white border border-gray-100 shadow-sm space-y-3">
               <div className="flex items-center justify-between cursor-pointer">
                 <span className="text-[13px] font-semibold text-gray-800">Available to You (₹0)</span>
                 <FiChevronDown className="w-4 h-4 text-gray-600" />
               </div>
-              <div className="flex items-center justify-between bg-[#fd5800]/5 p-2.5 rounded-xl border border-[#fd5800]/10">
+              <div className="flex items-center justify-between bg-[#fd5800]/5 p-2.5 rounded-md border border-[#fd5800]/10">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#fd5800] flex items-center justify-center text-white shadow-md">
+                  <div className="w-10 h-10 rounded-md bg-[#fd5800] flex items-center justify-center text-white shadow-md">
                     <FiMonitor className="w-5 h-5" />
                   </div>
                   <div>
@@ -206,7 +206,7 @@ const UserDashboardCom: FC = () => {
         <div className="lg:col-span-6 space-y-5">
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div className="bg-white p-5 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-between h-[210px] relative">
+            <div className="bg-white p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-between h-[210px] relative">
               <button className="absolute top-5 right-5 text-gray-300 hover:text-gray-500 transition-colors">
                 <FiMaximize2 className="w-4 h-4" />
               </button>
@@ -236,7 +236,7 @@ const UserDashboardCom: FC = () => {
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-between h-[210px] relative">
+            <div className="bg-white p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col justify-between h-[210px] relative">
               <button className="absolute top-5 right-5 text-gray-300 hover:text-gray-500 transition-colors">
                 <FiMaximize2 className="w-4 h-4" />
               </button>
@@ -263,7 +263,7 @@ const UserDashboardCom: FC = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] space-y-6 min-h-[220px]">
+          <div className="bg-white p-6 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] space-y-6 min-h-[220px]">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">August</span>
               <span className="text-[14px] font-bold text-gray-900">September 2026</span>
@@ -272,7 +272,7 @@ const UserDashboardCom: FC = () => {
 
             <div className="flex justify-between items-center text-center px-4">
               {['Mon 16', 'Tue 17', 'Wed 18', 'Thu 19', 'Fri 20', 'Sat 21'].map((day, idx) => (
-                <div key={idx} className={`flex flex-col items-center justify-center w-12 h-14 rounded-2xl ${idx === 2 ? 'bg-[#5301ab] text-white shadow-md' : 'text-gray-500 hover:bg-gray-50 cursor-pointer'}`}>
+                <div key={idx} className={`flex flex-col items-center justify-center w-12 h-14 rounded-md ${idx === 2 ? 'bg-[#5301ab] text-white shadow-md' : 'text-gray-500 hover:bg-gray-50 cursor-pointer'}`}>
                   <p className={`text-[10px] font-semibold ${idx === 2 ? 'text-white/80' : 'text-gray-400'}`}>{day.split(' ')[0]}</p>
                   <p className="text-[14px] font-bold font-heading leading-tight mt-1">{day.split(' ')[1]}</p>
                 </div>
@@ -287,14 +287,14 @@ const UserDashboardCom: FC = () => {
 
               <div className="relative z-10 space-y-4">
                 {scheduleEvents.map((event) => (
-                  <div 
+                  <div
                     key={event.id}
-                    className={`relative ${event.type === 'session' ? 'bg-[#fd5800] rounded-[1.25rem] p-3.5 flex justify-between items-center shadow-md w-full text-white' : 'flex items-center gap-4 group'}`}
+                    className={`relative ${event.type === 'session' ? 'bg-[#fd5800] rounded-md p-3.5 flex justify-between items-center shadow-md w-full text-white' : 'flex items-center gap-4 group'}`}
                   >
                     {event.type === 'team' && (
-                       <div className="absolute -left-6 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white rounded-full border-2 border-gray-200"></div>
+                      <div className="absolute -left-6 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white rounded-full border-2 border-gray-200"></div>
                     )}
-                    
+
                     <div className={event.type === 'team' ? "flex-1 flex justify-between items-center pr-4" : ""}>
                       <div>
                         <p className={`text-[13px] font-bold ${event.type === 'team' ? 'text-gray-900 group-hover:text-[#5301ab] transition-colors' : ''}`}>{event.title}</p>
@@ -317,12 +317,12 @@ const UserDashboardCom: FC = () => {
 
         <div className="lg:col-span-3 space-y-5">
 
-          <div className="bg-white p-5 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] space-y-4 h-[120px] flex flex-col justify-center">
+          <div className="bg-white p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] space-y-4 h-[120px] flex flex-col justify-center">
             <div className="flex items-center justify-between">
               <h4 className="text-[15px] font-bold text-gray-900">Benefits Usage</h4>
               <span className="font-heading text-[18px] font-bold text-gray-900">66%</span>
             </div>
-            <div className="flex gap-1.5 h-6 rounded-lg overflow-hidden">
+            <div className="flex gap-1.5 h-6 rounded-md overflow-hidden">
               <div className="bg-[#5301ab] h-full" style={{ width: '66%' }}></div>
               <div className="bg-gray-100 h-full flex-1"></div>
             </div>
@@ -332,7 +332,7 @@ const UserDashboardCom: FC = () => {
             </div>
           </div>
 
-          <div className="bg-[#1c2333] text-white p-6 rounded-[2rem] shadow-xl space-y-6">
+          <div className="bg-[#1c2333] text-white p-6 rounded-md shadow-xl space-y-6">
             <div className="flex items-start justify-between border-b border-white/10 pb-4">
               <div>
                 <h4 className="text-[15px] font-bold text-white">Emergency Help</h4>

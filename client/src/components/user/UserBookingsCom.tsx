@@ -136,53 +136,42 @@ const UserBookingsCom: FC = () => {
     return (
         <div className="w-full space-y-6 animate-in fade-in duration-500 pb-10">
 
-            {/* ================= TOP HEADER KPI SECTION ================= */}
-            <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8 flex flex-col xl:flex-row items-center gap-8 justify-between">
-
-                {/* Profile & Welcome */}
-                <div className="flex items-center gap-5 shrink-0 w-full xl:w-auto">
-                    <img src="https://i.pravatar.cc/300?img=11" alt="Arjun Kumar" className="w-20 h-20 rounded-full object-cover shadow-sm border-2 border-purple-50" />
+            {/* ================= HEADER SECTION (Insurance Style) ================= */}
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-5">
+                <div className="flex items-center gap-5">
+                    <img src="https://i.pravatar.cc/300?img=11" alt="Arjun Kumar" className="w-16 h-16 rounded-full object-cover shadow-sm border-2 border-white" />
                     <div>
-                        <h2 className="font-heading text-2xl font-bold text-gray-900 leading-tight mb-1">Good to see you, Arjun! 👋</h2>
-                        <p className="text-[12px] text-gray-500 font-medium mb-3">Here's a complete list of your upcoming and past healthcare bookings.</p>
-                        <div className="inline-flex items-center gap-1.5 bg-[#5301ab]/5 border border-[#5301ab]/10 px-3 py-1.5 rounded-full">
-                            <TbBuildingCommunity className="w-3.5 h-3.5 text-[#5301ab]" />
-                            <span className="text-[10px] font-bold text-[#5301ab] tracking-wide uppercase">Premium Corporate Plan</span>
-                        </div>
+                        <h2 className="font-heading text-2xl lg:text-[28px] font-bold text-gray-900 leading-tight mb-1">Good to see you, Arjun! 👋</h2>
+                        <p className="text-[13px] text-gray-500 font-medium">Here's a complete list of your upcoming and past healthcare bookings.</p>
                     </div>
                 </div>
 
-                {/* KPIs Grid */}
-                <div className="flex-1 w-full flex overflow-x-auto gap-4 pb-2 xl:pb-0 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                    {kpiData.map((kpi, idx) => (
-                        <div key={idx} className="flex items-center gap-4 bg-gray-50/50 border border-gray-100 rounded-[1.25rem] p-4 min-w-[160px] shrink-0 hover:bg-gray-50 transition-colors cursor-pointer">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${kpi.bg} ${kpi.color}`}>
-                                {kpi.icon}
-                            </div>
-                            <div>
-                                <div className="flex items-baseline gap-2 mb-0.5">
-                                    <h3 className="font-heading text-xl font-bold text-gray-900 leading-none">{kpi.value}</h3>
-                                </div>
-                                <p className="text-[11px] font-bold text-gray-800 leading-tight">{kpi.title}</p>
-                                <p className={`text-[9px] font-medium mt-0.5 ${idx === 1 ? 'text-emerald-600' : 'text-gray-500'}`}>{kpi.subtitle}</p>
-                            </div>
+                <div className="flex items-center gap-4 sm:gap-6 bg-white border border-gray-200 p-2 pr-4 rounded-md shadow-sm self-start lg:self-auto">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-md bg-[#5301ab]/10 flex items-center justify-center text-[#5301ab] shrink-0">
+                            <TbBuildingCommunity className="w-5 h-5" />
                         </div>
-                    ))}
+                        <div>
+                            <p className="text-[13px] sm:text-[14px] font-bold text-gray-900 leading-tight">Premium Corporate Plan</p>
+                            <p className="text-[11px] text-gray-500 font-medium mt-0.5">Innova Technologies</p>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                {/* Quote Card */}
-                <div className="hidden xl:flex items-center gap-4 bg-gradient-to-r from-purple-50/80 to-[#f8f9ff] border border-purple-100/50 rounded-[1.25rem] p-5 shrink-0 relative overflow-hidden min-w-[240px]">
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#5301ab] shadow-sm shrink-0 relative z-10">
-                        <FiHeart className="w-5 h-5" />
+            {/* ================= TOP KPIs GRID ================= */}
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                {kpiData.map((kpi, idx) => (
+                    <div key={idx} className="bg-white p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex items-center gap-4 hover:shadow-md transition-shadow">
+                        <div className={`w-10 h-10 rounded-md flex items-center justify-center shrink-0 ${kpi.bg} ${kpi.color}`}>
+                            {kpi.icon}
+                        </div>
+                        <div>
+                            <h3 className="font-heading text-[20px] font-bold text-gray-900 leading-none mb-1">{kpi.value}</h3>
+                            <p className="text-[11px] font-bold text-gray-600 leading-tight">{kpi.title}</p>
+                        </div>
                     </div>
-                    <div className="relative z-10">
-                        <p className="text-[12px] font-bold text-gray-900 leading-snug italic">"Better care<br />today, a healthier<br />tomorrow."</p>
-                        <p className="text-[10px] text-gray-500 font-medium mt-1">- ZoroCare</p>
-                    </div>
-                    <div className="absolute right-0 bottom-0 opacity-40 pointer-events-none w-16">
-                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/leaf-4993425-4161756.png" alt="Leaf" className="w-full h-full object-contain mix-blend-multiply" />
-                    </div>
-                </div>
+                ))}
             </div>
 
             {/* ================= MAIN CONTENT GRID ================= */}
@@ -209,17 +198,17 @@ const UserBookingsCom: FC = () => {
                             })}
                         </div>
                         <div className="flex items-center gap-3 pb-3">
-                            <button className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-lg text-[12px] font-bold text-gray-700 hover:bg-gray-50">
+                            <button className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-md text-[12px] font-bold text-gray-700 hover:bg-gray-50">
                                 <FiCalendar className="w-3.5 h-3.5" /> May 2026 <FiChevronDown className="w-3.5 h-3.5 ml-1" />
                             </button>
-                            <button className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-lg text-[12px] font-bold text-gray-700 hover:bg-gray-50">
+                            <button className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-md text-[12px] font-bold text-gray-700 hover:bg-gray-50">
                                 All Services <FiChevronDown className="w-3.5 h-3.5 ml-1" />
                             </button>
                         </div>
                     </div>
 
                     {/* Upcoming Bookings List */}
-                    <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8">
+                    <div className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8">
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-2">
                                 <h3 className="font-bold text-gray-900 text-[18px]">Upcoming Bookings</h3>
@@ -232,11 +221,11 @@ const UserBookingsCom: FC = () => {
 
                         <div className="space-y-4">
                             {upcomingBookings.map((booking, idx) => (
-                                <div key={idx} className="flex flex-col lg:flex-row gap-5 p-5 border border-gray-100 rounded-[1.5rem] hover:bg-gray-50/50 transition-colors">
+                                <div key={idx} className="flex flex-col lg:flex-row gap-5 p-5 border border-gray-100 rounded-md hover:bg-gray-50/50 transition-colors">
 
                                     {/* Service Info */}
                                     <div className="flex items-start gap-4 lg:w-[25%]">
-                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${booking.bg} ${booking.color}`}>
+                                        <div className={`w-12 h-12 rounded-md flex items-center justify-center shrink-0 ${booking.bg} ${booking.color}`}>
                                             <span className="text-xl">{booking.icon}</span>
                                         </div>
                                         <div>
@@ -292,7 +281,7 @@ const UserBookingsCom: FC = () => {
                     </div>
 
                     {/* Recent Bookings Table */}
-                    <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] overflow-hidden">
+                    <div className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] overflow-hidden">
                         <div className="p-6 md:p-8 border-b border-gray-50">
                             <div className="flex items-center justify-between mb-1">
                                 <div className="flex items-center gap-2">
@@ -324,7 +313,7 @@ const UserBookingsCom: FC = () => {
                                             <td className="px-6 py-4 whitespace-nowrap text-[12px] font-medium text-gray-500">{booking.date}</td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${booking.bg} ${booking.color}`}>
+                                                    <div className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 ${booking.bg} ${booking.color}`}>
                                                         {booking.icon}
                                                     </div>
                                                     <span className="text-[13px] font-bold text-gray-900">{booking.service}</span>
@@ -370,12 +359,12 @@ const UserBookingsCom: FC = () => {
                 <div className="xl:col-span-4 space-y-6">
 
                     {/* Quick Actions Grid */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+                    <div className="bg-white p-6 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
                         <h3 className="font-bold text-gray-900 text-[16px] mb-5">Quick Actions</h3>
                         <div className="grid grid-cols-3 gap-3">
                             {quickActions.map((action, idx) => (
-                                <div key={idx} className="flex flex-col items-center text-center gap-2 cursor-pointer group bg-gray-50/50 p-3 rounded-[1.25rem] border border-gray-100 hover:bg-white hover:border-[#5301ab]/20 transition-all shadow-sm hover:shadow-md">
-                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform ${action.bg} ${action.color}`}>
+                                <div key={idx} className="flex flex-col items-center text-center gap-2 cursor-pointer group bg-gray-50/50 p-3 rounded-md border border-gray-100 hover:bg-white hover:border-[#5301ab]/20 transition-all shadow-sm hover:shadow-md">
+                                    <div className={`w-12 h-12 rounded-md flex items-center justify-center group-hover:scale-110 transition-transform ${action.bg} ${action.color}`}>
                                         <span className="text-xl">{action.icon}</span>
                                     </div>
                                     <span className="text-[10px] font-bold text-gray-700 leading-tight whitespace-pre-line">{action.label}</span>
@@ -385,7 +374,7 @@ const UserBookingsCom: FC = () => {
                     </div>
 
                     {/* Support Banner */}
-                    <div className="bg-gradient-to-br from-[#f8f9ff] to-purple-50 p-6 rounded-[2rem] border border-purple-100/50 shadow-sm relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-[#f8f9ff] to-purple-50 p-6 rounded-md border border-purple-100/50 shadow-sm relative overflow-hidden">
                         <div className="relative z-10 w-[65%]">
                             <h3 className="font-bold text-gray-900 text-[15px] mb-2">Need Help with Your Booking?</h3>
                             <p className="text-[11px] text-gray-600 mb-5 leading-relaxed font-medium">Our care support team is here to help you with any changes, questions or special requests.</p>
@@ -405,12 +394,12 @@ const UserBookingsCom: FC = () => {
                     </div>
 
                     {/* Booking Status Guide */}
-                    <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+                    <div className="bg-white p-6 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
                         <h3 className="font-bold text-gray-900 text-[16px] mb-5">Booking Status Guide</h3>
                         <div className="space-y-4">
                             {statusGuides.map((guide, idx) => (
-                                <div key={idx} className="flex items-start gap-4 p-2 -mx-2 hover:bg-gray-50 rounded-xl transition-colors">
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${guide.bg} ${guide.color}`}>
+                                <div key={idx} className="flex items-start gap-4 p-2 -mx-2 hover:bg-gray-50 rounded-md transition-colors">
+                                    <div className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 mt-0.5 ${guide.bg} ${guide.color}`}>
                                         {guide.icon}
                                     </div>
                                     <div>
@@ -427,7 +416,7 @@ const UserBookingsCom: FC = () => {
                     </div>
 
                     {/* Promotional Banner */}
-                    <div className="bg-gradient-to-br from-[#f0f4ff] to-[#f8f9ff] border border-blue-100 rounded-[2rem] p-6 shadow-sm relative overflow-hidden flex flex-col items-start justify-center min-h-[140px]">
+                    <div className="bg-gradient-to-br from-[#f0f4ff] to-[#f8f9ff] border border-blue-100 rounded-md p-6 shadow-sm relative overflow-hidden flex flex-col items-start justify-center min-h-[140px]">
                         <div className="relative z-10 w-[60%] text-left">
                             <h3 className="font-bold text-gray-900 text-[15px] mb-1">Take charge<br />of your health</h3>
                             <p className="text-[12px] text-gray-600 font-medium mb-4 leading-relaxed">Book. Track. Stay healthy.</p>
