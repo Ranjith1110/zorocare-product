@@ -214,7 +214,13 @@ const InsuranceCorporateManagementCom: FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
                         <div className="lg:col-span-2 flex items-center gap-2 bg-gray-50 border border-gray-200 px-3 py-2 rounded-md focus-within:border-[#5301ab]/50 transition-colors">
                             <FiSearch className="text-gray-400 w-4 h-4" />
-                            <input type="text" placeholder="Search corporate name, contact..." className="bg-transparent border-none outline-none text-[12px] w-full placeholder-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search corporate name, contact..."
+                                className="bg-transparent border-none outline-none text-[12px] w-full placeholder-gray-400"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                         </div>
                         <div className="relative">
                             <select className="w-full bg-gray-50 border border-gray-200 px-3 py-2 rounded-md text-[12px] font-medium text-gray-700 appearance-none outline-none focus:border-[#5301ab]/50">
