@@ -6,6 +6,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 import SuperAdminLayout from '../layouts/SuperAdminLayout';
 import UserLayout from '../layouts/UserLayout';
 import InsuranceLayout from '../layouts/InsuranceLayout';
+import CorporateLayout from '../layouts/CorporateLayout';
 
 // Super Admin Pages
 import SuperAdminDashbaord from '../pages/superadmin/SuperAdminDashbaord';
@@ -33,6 +34,14 @@ import InsuranceSponsoredServices from '../pages/insurance/InsuranceSponsoredSer
 import InsuranceHealthcheckups from '../pages/insurance/InsuranceHealthcheckups';
 import InsuranceOtherServices from '../pages/insurance/InsuranceOtherServices';
 import InsuranceHistory from '../pages/insurance/InsuranceHistory';
+
+// Corporate Pages
+import CorporateDashboard from '../pages/corporate/CorporateDashboard';
+import CorporateUserManagement from '../pages/corporate/CorporateUserManagement';
+import CorporateSponsoredServices from '../pages/corporate/CorporateSponsoredServices';
+import CorporateHealthcheckups from '../pages/corporate/CorporateHealthcheckups';
+import CorporateOtherServices from '../pages/corporate/CorporateOtherServices';
+import CorporateHistory from '../pages/corporate/CorporateHistory';
 
 export const AppRoutes: FC = () => {
   return (
@@ -102,6 +111,23 @@ export const AppRoutes: FC = () => {
         <Route path="healthcheckups" element={<InsuranceHealthcheckups />} />
         <Route path="other-services" element={<InsuranceOtherServices />} />
         <Route path="history" element={<InsuranceHistory />} />
+      </Route>
+
+      {/* Corporate Dashboard Routes */}
+      <Route
+        path="/corporate"
+        element={
+          <CorporateLayout />
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<CorporateDashboard />} />
+        {/* Notice we omitted corporate-management for the Corporate Dashboard */}
+        <Route path="user-management" element={<CorporateUserManagement />} />
+        <Route path="sponsored-services" element={<CorporateSponsoredServices />} />
+        <Route path="healthcheckups" element={<CorporateHealthcheckups />} />
+        <Route path="other-services" element={<CorporateOtherServices />} />
+        <Route path="history" element={<CorporateHistory />} />
       </Route>
 
     </Routes>

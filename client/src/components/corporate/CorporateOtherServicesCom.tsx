@@ -11,11 +11,11 @@ import { TbDental, TbTruckDelivery } from "react-icons/tb";
 import Button from '../common/Button';
 
 // Detailed Components
-import IDWellnessServicesOtherServices from './other-services/IDWellnessServicesOtherServices';
-import IDCareProgramsOtherServices from './other-services/IDCareProgramsOtherServices';
-import IDDetalCheckupOtherServices from './other-services/IDDetalCheckupOtherServices';
-import IDEyeCheckupsOtherServices from './other-services/IDEyeCheckupsOtherServices';
-import IDAmbulanceServicesOtherServices from './other-services/IDAmbulanceServicesOtherServices';
+import CDWellnessServicesOtherServices from './other-services/CDWellnessServicesOtherServices';
+import CDCareProgramsOtherServices from './other-services/CDCareProgramsOtherServices';
+import CDDetalCheckupOtherServices from './other-services/CDDetalCheckupOtherServices';
+import CDEyeCheckupsOtherServices from './other-services/CDEyeCheckupsOtherServices';
+import CDAmbulanceServicesOtherServices from './other-services/CDAmbulanceServicesOtherServices';
 
 // --- Interfaces ---
 interface KPI {
@@ -31,7 +31,7 @@ interface Step {
     id: number; title: string; description: string; icon: ReactNode;
 }
 
-const InsuranceOtherServicesCom: FC = () => {
+const CorporateOtherServicesCom: FC = () => {
     const [selectedService, setSelectedService] = useState<ServiceCard | null>(null);
 
     const topKPIs: KPI[] = [
@@ -44,7 +44,7 @@ const InsuranceOtherServicesCom: FC = () => {
     const availableServices: ServiceCard[] = [
         {
             title: 'Wellness Services',
-            description: 'Yoga, fitness, nutrition, mental wellness and lifestyle coaching for a healthier you.',
+            description: 'Yoga, fitness, nutrition, mental wellness and lifestyle coaching for healthier employees.',
             image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=250&fit=crop',
             icon: <FiActivity className="w-5 h-5" />, color: 'text-[#5301ab]', bg: 'bg-[#5301ab]/10',
             buttonText: 'Explore Services', buttonColor: '!bg-[#5301ab] hover:!bg-[#43008a]'
@@ -83,7 +83,7 @@ const InsuranceOtherServicesCom: FC = () => {
         { title: 'Wide Network', description: '500+ trusted service partners across India', icon: <FiGlobe className="w-6 h-6 text-[#5301ab]" /> },
         { title: 'Cashless Options', description: 'Cashless & insured services available', icon: <FiCreditCard className="w-6 h-6 text-[#5301ab]" /> },
         { title: 'Easy Booking', description: 'Quick & hassle-free booking process', icon: <FiCalendar className="w-6 h-6 text-[#5301ab]" /> },
-        { title: '24x7 Support', description: 'We\'re here to help you anytime', icon: <FiHeadphones className="w-6 h-6 text-[#5301ab]" /> },
+        { title: '24x7 Support', description: 'We\'re here to help your team anytime', icon: <FiHeadphones className="w-6 h-6 text-[#5301ab]" /> },
         { title: 'Secure & Reliable', description: 'Verified providers & quality assured', icon: <FiShield className="w-6 h-6 text-[#5301ab]" /> },
     ];
 
@@ -94,19 +94,18 @@ const InsuranceOtherServicesCom: FC = () => {
         { id: 4, title: 'Avail Service', description: 'Receive the service and make payment if applicable.', icon: <FiCreditCard className="w-5 h-5 text-[#5301ab]" /> },
     ];
 
-    // Handle Conditional Rendering for Detailed Services
     if (selectedService) {
         switch (selectedService.title) {
             case 'Wellness Services':
-                return <IDWellnessServicesOtherServices onBack={() => setSelectedService(null)} />;
+                return <CDWellnessServicesOtherServices onBack={() => setSelectedService(null)} />;
             case 'Care Programs':
-                return <IDCareProgramsOtherServices onBack={() => setSelectedService(null)} />;
+                return <CDCareProgramsOtherServices onBack={() => setSelectedService(null)} />;
             case 'Dental Services':
-                return <IDDetalCheckupOtherServices onBack={() => setSelectedService(null)} />;
+                return <CDDetalCheckupOtherServices onBack={() => setSelectedService(null)} />;
             case 'Eye & Optical Services':
-                return <IDEyeCheckupsOtherServices onBack={() => setSelectedService(null)} />;
+                return <CDEyeCheckupsOtherServices onBack={() => setSelectedService(null)} />;
             case 'Ambulance Services':
-                return <IDAmbulanceServicesOtherServices onBack={() => setSelectedService(null)} />;
+                return <CDAmbulanceServicesOtherServices onBack={() => setSelectedService(null)} />;
             default:
                 return (
                     <div className="w-full space-y-6 animate-in fade-in duration-500 pb-10">
@@ -122,16 +121,14 @@ const InsuranceOtherServicesCom: FC = () => {
 
     return (
         <div className="w-full space-y-6 animate-in fade-in duration-500 pb-10">
-            
-            {/* ================= HEADER SECTION ================= */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
                 <div>
+                    <h1 className="text-[10px] font-bold text-[#5301ab] uppercase tracking-wider mb-1">Corporate Dashboard</h1>
                     <h2 className="font-heading text-2xl lg:text-[28px] font-bold text-gray-900 leading-tight">Other Services</h2>
-                    <p className="text-[13px] text-gray-500 font-medium mt-1">Access a range of essential healthcare and support services for you and your family.</p>
+                    <p className="text-[13px] text-gray-500 font-medium mt-1">Access a range of essential healthcare and support services for your employees.</p>
                 </div>
             </div>
 
-            {/* ================= TOP KPIs ================= */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {topKPIs.map((kpi, idx) => (
                     <div key={idx} className="bg-white p-4 sm:p-5 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 hover:shadow-md transition-shadow">
@@ -149,27 +146,21 @@ const InsuranceOtherServicesCom: FC = () => {
                 ))}
             </div>
 
-            {/* ================= SERVICES GRID (Responsive) ================= */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+            <div className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory">
                 {availableServices.map((service, idx) => (
-                    <div key={idx} className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col hover:shadow-md transition-shadow h-full group">
-                        
-                        {/* Image Container setup carefully to allow absolute icon overlay */}
-                        <div className="relative">
-                            <div className="h-[150px] w-full overflow-hidden rounded-t-md bg-gray-50">
+                    <div key={idx} className="bg-white rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] flex flex-col w-[85vw] sm:min-w-[260px] sm:max-w-[280px] shrink-0 hover:shadow-md transition-shadow relative overflow-hidden group snap-center">
+                        <div className="relative w-full">
+                            <div className="h-[140px] w-full overflow-hidden rounded-t-md bg-gray-50">
                                 <img src={service.image} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
-                            
-                            {/* Floating Icon OUTSIDE the hidden overflow */}
-                            <div className="absolute -bottom-5 left-5 w-12 h-12 rounded-md flex items-center justify-center shadow-md bg-white border border-gray-50 z-10">
+                            <div className="absolute -bottom-6 left-5 w-12 h-12 rounded-md flex items-center justify-center shadow-md bg-white border border-gray-50 z-10">
                                 <div className={`w-10 h-10 rounded-md flex items-center justify-center ${service.bg} ${service.color}`}>
                                     {service.icon}
                                 </div>
                             </div>
                         </div>
 
-                        {/* Content */}
-                        <div className="pt-8 p-5 flex flex-col flex-1">
+                        <div className="pt-9 p-5 flex flex-col flex-1">
                             <h4 className="font-bold text-[15px] text-gray-900 leading-tight mb-2">{service.title}</h4>
                             <p className="text-[11px] text-gray-500 font-medium leading-relaxed mb-6 flex-1 min-h-[40px]">{service.description}</p>
                             <Button
@@ -184,7 +175,6 @@ const InsuranceOtherServicesCom: FC = () => {
                 ))}
             </div>
 
-            {/* ================= VALUE PROPS SECTION ================= */}
             <div className="bg-white rounded-md border border-gray-100 p-5 sm:p-6 md:p-8 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 sm:gap-6">
                     {valueProps.map((prop, idx) => (
@@ -201,30 +191,22 @@ const InsuranceOtherServicesCom: FC = () => {
                 </div>
             </div>
 
-            {/* ================= BOTTOM GRID ================= */}
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
-                
-                {/* LEFT COLUMN */}
                 <div className="xl:col-span-8 flex flex-col gap-6">
-                    
-                    {/* How It Works (Responsive Design) */}
                     <div className="bg-white p-5 sm:p-6 md:p-8 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] overflow-hidden">
                         <h3 className="font-bold text-gray-900 text-[16px] mb-6 sm:mb-8">How It Works</h3>
-                        
-                        {/* Desktop Horizontal View */}
-                        <div className="hidden md:block w-full relative">
-                            <div className="absolute top-[28px] left-[12%] right-[12%] h-[1px] border-b border-dashed border-gray-300 z-0"></div>
-                            
+
+                        <div className="hidden md:block w-full relative mt-4">
+                            <div className="absolute top-[12px] left-[12%] right-[12%] h-[1px] border-b border-dashed border-gray-300 z-0"></div>
+
                             <div className="flex items-start justify-between gap-4">
                                 {bookingSteps.map((step, idx) => (
                                     <div key={idx} className="flex-1 flex flex-col items-center relative z-10 group">
-                                        <div className="relative mb-4">
-                                            <div className="absolute -top-3 -right-3 w-6 h-6 bg-[#5301ab] text-white rounded-full flex items-center justify-center text-[10px] font-bold shadow-md ring-4 ring-white z-20">
-                                                {step.id}
-                                            </div>
-                                            <div className="w-14 h-14 rounded-md bg-white border border-gray-100 shadow-sm flex items-center justify-center group-hover:border-[#5301ab]/30 group-hover:bg-[#5301ab]/5 transition-colors relative z-10">
-                                                {step.icon}
-                                            </div>
+                                        <div className="w-6 h-6 bg-[#5301ab] text-white rounded-full flex items-center justify-center text-[10px] font-bold shadow-md ring-4 ring-white z-20 mb-4">
+                                            {step.id}
+                                        </div>
+                                        <div className="w-14 h-14 rounded-md bg-white border border-gray-100 shadow-sm flex items-center justify-center group-hover:border-[#5301ab]/30 group-hover:bg-[#5301ab]/5 transition-colors relative z-10 mb-3">
+                                            {step.icon}
                                         </div>
                                         <div className="text-center px-2">
                                             <h4 className="font-bold text-[13px] text-gray-900 leading-tight mb-1">{step.title}</h4>
@@ -235,22 +217,23 @@ const InsuranceOtherServicesCom: FC = () => {
                             </div>
                         </div>
 
-                        {/* Mobile Vertical View */}
-                        <div className="md:hidden space-y-6 relative ml-4">
-                            <div className="absolute left-[19px] top-6 bottom-6 w-[1px] bg-gray-100 z-0 border-l border-dashed border-gray-300"></div>
-                            
+                        <div className="md:hidden space-y-8 relative ml-4 mt-4">
+                            <div className="absolute left-[11px] top-6 bottom-6 w-[1px] bg-gray-100 z-0 border-l border-dashed border-gray-300"></div>
+
                             {bookingSteps.map((step, idx) => (
                                 <div key={idx} className="flex gap-4 group relative z-10">
-                                    <div className="relative shrink-0">
-                                        <div className="absolute -top-2 -right-2 w-5 h-5 bg-[#5301ab] text-white rounded-full flex items-center justify-center text-[9px] font-bold shadow-md ring-2 ring-white z-20">
+                                    <div className="flex flex-col items-center shrink-0">
+                                        <div className="w-6 h-6 bg-[#5301ab] text-white rounded-full flex items-center justify-center text-[10px] font-bold shadow-md ring-4 ring-white z-20 mb-2">
                                             {step.id}
                                         </div>
-                                        <div className="w-10 h-10 rounded-md bg-white border border-gray-100 shadow-sm flex items-center justify-center">
-                                            {step.icon}
-                                        </div>
                                     </div>
-                                    <div className="pt-1">
-                                        <h4 className="font-bold text-[13px] text-gray-900 leading-tight mb-0.5">{step.title}</h4>
+                                    <div className="flex-1 pt-0.5">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <div className="w-10 h-10 rounded-md bg-white border border-gray-100 shadow-sm flex items-center justify-center shrink-0">
+                                                {step.icon}
+                                            </div>
+                                            <h4 className="font-bold text-[13px] text-gray-900 leading-tight">{step.title}</h4>
+                                        </div>
                                         <p className="text-[11px] text-gray-500 font-medium leading-relaxed">{step.description}</p>
                                     </div>
                                 </div>
@@ -258,14 +241,13 @@ const InsuranceOtherServicesCom: FC = () => {
                         </div>
                     </div>
 
-                    {/* Promotional Banner */}
                     <div className="bg-gradient-to-r from-purple-50 to-indigo-50/50 rounded-md border border-purple-100/60 p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 shadow-sm relative overflow-hidden flex-1 text-center sm:text-left">
                         <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-md bg-[#5301ab] text-white flex items-center justify-center shadow-lg shadow-[#5301ab]/30 shrink-0 relative z-10">
                             <FiCheckCircle className="w-6 h-6 sm:w-8 sm:h-8" />
                         </div>
                         <div className="relative z-10 flex-1">
-                            <h3 className="font-bold text-[16px] sm:text-[18px] text-[#5301ab] leading-tight mb-1.5">Your Health, Our Priority</h3>
-                            <p className="text-[11px] sm:text-[12px] text-gray-600 font-medium leading-relaxed sm:max-w-md">We bring trusted services closer to you for a healthier and happier life. Book with confidence!</p>
+                            <h3 className="font-bold text-[16px] sm:text-[18px] text-[#5301ab] leading-tight mb-1.5">Employee Health, Our Priority</h3>
+                            <p className="text-[11px] sm:text-[12px] text-gray-600 font-medium leading-relaxed sm:max-w-md">We bring trusted services closer to your team for a healthier and happier life. Manage with confidence!</p>
                         </div>
                         <div className="absolute right-0 bottom-0 w-[50%] sm:w-[40%] opacity-90 pointer-events-none transform translate-y-2 hidden sm:block">
                             <img src="https://cdn3d.iconscout.com/3d/premium/thumb/health-insurance-4993426-4161757.png" alt="Health Shield" className="w-full h-auto drop-shadow-xl" />
@@ -273,11 +255,10 @@ const InsuranceOtherServicesCom: FC = () => {
                     </div>
                 </div>
 
-                {/* RIGHT COLUMN */}
                 <div className="xl:col-span-4 bg-gray-50/80 rounded-md border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 md:p-8 flex flex-col relative overflow-hidden h-full min-h-[300px] sm:min-h-[400px]">
                     <div className="relative z-10">
                         <h3 className="font-bold text-gray-900 text-[18px] mb-2 leading-tight">Need Help?</h3>
-                        <p className="text-[12px] text-gray-600 font-medium leading-relaxed mb-6 max-w-[200px]">Our support team is available 24x7 to assist you with bookings and service related queries.</p>
+                        <p className="text-[12px] text-gray-600 font-medium leading-relaxed mb-6 max-w-[200px]">Our support team is available 24x7 to assist you with tracking and service related queries.</p>
                         <Button variant="primary" className="!bg-[#5301ab] hover:!bg-[#43008a] !py-2.5 !text-[12px] shadow-md shadow-[#5301ab]/20 w-fit" icon={<FiPhoneCall className="w-4 h-4" />}>
                             Contact Support
                         </Button>
@@ -291,4 +272,4 @@ const InsuranceOtherServicesCom: FC = () => {
     );
 };
 
-export default InsuranceOtherServicesCom;
+export default CorporateOtherServicesCom;

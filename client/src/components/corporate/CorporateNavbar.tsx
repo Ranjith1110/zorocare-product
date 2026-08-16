@@ -9,20 +9,20 @@ interface NavLink {
     path: string;
 }
 
-const InsuranceNavbar: FC = () => {
+const CorporateNavbar: FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
+    // Corporate Management is removed from this navigation
     const navLinks: NavLink[] = [
-        { name: 'Dashboard', path: '/insurance/dashboard' },
-        { name: 'Corporate Management', path: '/insurance/corporate-management' },
-        { name: 'User Management', path: '/insurance/user-management' },
-        { name: 'Sponsored Services', path: '/insurance/sponsored-services' },
-        { name: 'Healthcheckups', path: '/insurance/healthcheckups' },
-        { name: 'Other Services', path: '/insurance/other-services' },
-        { name: 'History', path: '/insurance/history' },
+        { name: 'Dashboard', path: '/corporate/dashboard' },
+        { name: 'User Management', path: '/corporate/user-management' },
+        { name: 'Sponsored Services', path: '/corporate/sponsored-services' },
+        { name: 'Healthcheckups', path: '/corporate/healthcheckups' },
+        { name: 'Other Services', path: '/corporate/other-services' },
+        { name: 'History', path: '/corporate/history' },
     ];
 
     const handleLogout = () => {
@@ -52,20 +52,18 @@ const InsuranceNavbar: FC = () => {
 
                 {/* Co-Branded Logo Section */}
                 <div className="flex items-center shrink-0 gap-3 md:gap-4">
-                    {/* Primary Zoro Care Logo */}
                     <img
                         src="/logo-stright.png"
                         alt="Zoro Care Logo"
                         className="h-8 md:h-12 w-auto object-contain"
                     />
-                    
-                    {/* Vertical Divider */}
+
                     <div className="h-6 md:h-8 w-[1px] bg-gray-300 rounded-full"></div>
-                    
-                    {/* Dummy Insurance Logo - Replace src with actual logo later */}
+
+                    {/* Dummy Corporate Partner Logo */}
                     <img
-                        src="/star-logo.svg"
-                        alt="Insurance Partner Logo"
+                        src="/IndiGo-logo.avif"
+                        alt="Corporate Partner Logo"
                         className="h-8 md:h-12 w-auto object-contain"
                     />
                 </div>
@@ -121,8 +119,8 @@ const InsuranceNavbar: FC = () => {
                                     ></div>
                                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                                         <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                                            <p className="text-[13px] font-bold text-gray-900 truncate">Insurance Admin</p>
-                                            <p className="text-[11px] font-medium text-gray-500 truncate">admin@zorocare.com</p>
+                                            <p className="text-[13px] font-bold text-gray-900 truncate">Corporate Admin</p>
+                                            <p className="text-[11px] font-medium text-gray-500 truncate">admin@company.com</p>
                                         </div>
                                         <button
                                             onClick={handleLogout}
@@ -136,7 +134,6 @@ const InsuranceNavbar: FC = () => {
                             )}
                         </div>
 
-                        {/* Explicit Desktop Logout Button */}
                         <button
                             onClick={handleLogout}
                             title="Logout"
@@ -146,7 +143,7 @@ const InsuranceNavbar: FC = () => {
                         </button>
 
                         <button
-                            className="xl:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm border border-gray-100 text-gray-700 hover:text-[#5301ab] transition-colors shrink-0"
+                            className="xl:hidden flex h-10 w-10 items-center justify-center rounded-md bg-white shadow-sm border border-gray-100 text-gray-700 hover:text-[#5301ab] transition-colors shrink-0"
                             onClick={() => setIsMobileMenuOpen(true)}
                         >
                             <FiMenu className="w-6 h-6" />
@@ -165,20 +162,11 @@ const InsuranceNavbar: FC = () => {
                 className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-white shadow-2xl transition-transform duration-400 ease-[cubic-bezier(0.25,0.8,0.25,1)] xl:hidden flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
             >
-                {/* Mobile Menu Header with Co-Branded Logos */}
                 <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-white shrink-0">
                     <div className="flex items-center gap-2">
-                        <img
-                            src="/logo-stright.png"
-                            alt="Zoro Care"
-                            className="h-6 w-auto object-contain"
-                        />
+                        <img src="/logo-stright.png" alt="Zoro Care" className="h-6 w-auto object-contain" />
                         <div className="h-4 w-[1px] bg-gray-300 rounded-full"></div>
-                        <img
-                            src="/star-logo.svg"
-                            alt="Insurance Partner"
-                            className="h-6 w-auto object-contain"
-                        />
+                        <img src="/IndiGo-logo.avif" alt="Corporate Partner" className="h-6 w-auto object-contain" />
                     </div>
                     <button
                         onClick={() => setIsMobileMenuOpen(false)}
@@ -195,7 +183,7 @@ const InsuranceNavbar: FC = () => {
                             <Link
                                 key={`mobile-${link.name}`}
                                 to={link.path}
-                                className={`w-full flex rounded-2xl px-5 py-4 text-left text-[15px] font-bold transition-all ${isActive
+                                className={`w-full flex rounded-md px-5 py-4 text-left text-[15px] font-bold transition-all ${isActive
                                     ? 'bg-[#5301ab] text-white shadow-md'
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'
                                     }`}
@@ -207,13 +195,13 @@ const InsuranceNavbar: FC = () => {
                 </div>
 
                 <div className="p-5 border-t border-gray-100 bg-gray-50/80 space-y-3 shrink-0">
-                    <button className="flex w-full items-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">
+                    <button className="flex w-full items-center gap-3 rounded-md bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">
                         <MdSubscriptions className="w-5 h-5 text-gray-400" />
                         Subscriptions
                     </button>
                     <button
                         onClick={handleLogout}
-                        className="flex w-full items-center gap-3 rounded-2xl bg-[#fd5800]/10 px-5 py-3.5 text-[14px] font-bold text-[#fd5800] hover:bg-[#fd5800]/20 transition-colors"
+                        className="flex w-full items-center gap-3 rounded-md bg-[#fd5800]/10 px-5 py-3.5 text-[14px] font-bold text-[#fd5800] hover:bg-[#fd5800]/20 transition-colors"
                     >
                         <FiLogOut className="w-5 h-5" />
                         Logout
@@ -224,4 +212,4 @@ const InsuranceNavbar: FC = () => {
     );
 };
 
-export default InsuranceNavbar;
+export default CorporateNavbar;
