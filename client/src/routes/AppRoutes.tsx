@@ -2,11 +2,18 @@ import type { FC } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
+// Website Pages
+import Index from '../pages/website/Index';
+
 // Layouts
 import SuperAdminLayout from '../layouts/SuperAdminLayout';
 import UserLayout from '../layouts/UserLayout';
 import InsuranceLayout from '../layouts/InsuranceLayout';
 import CorporateLayout from '../layouts/CorporateLayout';
+
+// Auth Pages
+import SuperAdminLogin from '../pages/auth/SuperAdminLogin';
+import CommonLogin from '../pages/auth/CommonLogin';
 
 // Super Admin Pages
 import SuperAdminDashbaord from '../pages/superadmin/SuperAdminDashbaord';
@@ -16,7 +23,6 @@ import SuperAdminCorporateHub from '../pages/superadmin/SuperAdminCorporateHub';
 import SuperAdminUserHub from '../pages/superadmin/SuperAdminUserHub';
 import SuperAdminMedicalCenters from '../pages/superadmin/SuperAdminMedicalCenters';
 import SuperAdminServiceHub from '../pages/superadmin/SuperAdminServiceHub';
-import SuperAdminLogin from '../pages/auth/SuperAdminLogin';
 
 // User Pages
 import UserDashboard from '../pages/user/UserDashboard';
@@ -46,26 +52,30 @@ import CorporateHistory from '../pages/corporate/CorporateHistory';
 export const AppRoutes: FC = () => {
   return (
     <Routes>
-      {/* Root Redirect based on authentication status */}
+      {/* Public Website Route */}
+      <Route path="/" element={<Index />} />
+
+      {/* Smart Dashboard Redirector based on authentication status across all roles */}
       <Route
-        path="/"
+        path="/dashboard"
         element={
-          localStorage.getItem('superadmin_auth') === 'true'
-            ? <Navigate to="/super-admin/dashboard" replace />
-            : localStorage.getItem('user_auth') === 'true'
-              ? <Navigate to="/user/dashboard" replace />
-              : <Navigate to="/login" replace />
+          localStorage.getItem('superadmin_auth') === 'true' ? <Navigate to="/super-admin/dashboard" replace /> :
+            localStorage.getItem('insurance_auth') === 'true' ? <Navigate to="/insurance/dashboard" replace /> :
+              localStorage.getItem('corporate_auth') === 'true' ? <Navigate to="/corporate/dashboard" replace /> :
+                localStorage.getItem('user_auth') === 'true' ? <Navigate to="/user/dashboard" replace /> :
+                  <Navigate to="/login" replace />
         }
       />
 
-      {/* Public Login Route */}
-      <Route path="/login" element={<SuperAdminLogin />} />
+      {/* Public Login Routes */}
+      <Route path="/login" element={<CommonLogin />} />
+      <Route path="/admin-login" element={<SuperAdminLogin />} />
 
       {/* Protected Super Admin Routes */}
       <Route
         path="/super-admin"
         element={
-          <ProtectedRoute authKey="superadmin_auth" redirectTo="/login">
+          <ProtectedRoute authKey="superadmin_auth" redirectTo="/admin-login">
             <SuperAdminLayout />
           </ProtectedRoute>
         }
@@ -84,7 +94,9 @@ export const AppRoutes: FC = () => {
       <Route
         path="/user"
         element={
-          <UserLayout />
+          <ProtectedRoute authKey="user_auth" redirectTo="/login">
+            <UserLayout />
+          </ProtectedRoute>
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
@@ -96,11 +108,13 @@ export const AppRoutes: FC = () => {
         <Route path="history" element={<UserHistory />} />
       </Route>
 
-      {/* Insurance Broker Routes */}
+      {/* Protected Insurance Broker Routes */}
       <Route
         path="/insurance"
         element={
-          <InsuranceLayout />
+          <ProtectedRoute authKey="insurance_auth" redirectTo="/login">
+            <InsuranceLayout />
+          </ProtectedRoute>
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
@@ -113,16 +127,17 @@ export const AppRoutes: FC = () => {
         <Route path="history" element={<InsuranceHistory />} />
       </Route>
 
-      {/* Corporate Dashboard Routes */}
+      {/* Protected Corporate Dashboard Routes */}
       <Route
         path="/corporate"
         element={
-          <CorporateLayout />
+          <ProtectedRoute authKey="corporate_auth" redirectTo="/login">
+            <CorporateLayout />
+          </ProtectedRoute>
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<CorporateDashboard />} />
-        {/* Notice we omitted corporate-management for the Corporate Dashboard */}
         <Route path="user-management" element={<CorporateUserManagement />} />
         <Route path="sponsored-services" element={<CorporateSponsoredServices />} />
         <Route path="healthcheckups" element={<CorporateHealthcheckups />} />

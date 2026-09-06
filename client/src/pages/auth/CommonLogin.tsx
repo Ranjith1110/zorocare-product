@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMail, FiLock, FiLogIn, FiShield } from 'react-icons/fi';
+import { FiMail, FiLock, FiLogIn, FiUsers } from 'react-icons/fi';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 
-const SuperAdminLogin: FC = () => {
+const CommonLogin: FC = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -15,11 +15,20 @@ const SuperAdminLogin: FC = () => {
         e.preventDefault();
         setError('');
 
-        // Static Authentication Logic
-        if (email === 'admin@zorocare.com' && password === 'admin123') {
-            localStorage.setItem('superadmin_auth', 'true');
-            navigate('/super-admin/dashboard');
-        } else {
+        // Static Role-Based Authentication Logic
+        if (email === 'insurance@zorocare.com' && password === 'ins123') {
+            localStorage.setItem('insurance_auth', 'true');
+            navigate('/insurance/dashboard');
+        }
+        else if (email === 'corporate@zorocare.com' && password === 'corp123') {
+            localStorage.setItem('corporate_auth', 'true');
+            navigate('/corporate/dashboard');
+        }
+        else if (email === 'user@zorocare.com' && password === 'user123') {
+            localStorage.setItem('user_auth', 'true');
+            navigate('/user/dashboard');
+        }
+        else {
             setError('Invalid email or password. Please try again.');
         }
     };
@@ -34,13 +43,13 @@ const SuperAdminLogin: FC = () => {
                 {/* Logo / Branding Area */}
                 <div className="flex flex-col items-center mb-8">
                     <div className="w-16 h-16 bg-gradient-to-br from-[#7315e0] to-[#5301ab] rounded-2xl flex items-center justify-center shadow-lg shadow-[#5301ab]/20 mb-4">
-                        <FiShield className="w-8 h-8 text-white" />
+                        <FiUsers className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
                         Zorocare <span className="text-[#5301ab]">Portal</span>
                     </h1>
-                    <p className="text-[13px] font-medium text-gray-500 mt-1.5 uppercase tracking-widest">
-                        Super Admin Access
+                    <p className="text-[13px] font-medium text-gray-500 mt-1.5 uppercase tracking-widest text-center">
+                        User & Partner Access
                     </p>
                 </div>
 
@@ -51,7 +60,7 @@ const SuperAdminLogin: FC = () => {
 
                     <div className="mb-8 text-center">
                         <h2 className="text-[20px] font-bold text-gray-900 leading-tight">Welcome Back</h2>
-                        <p className="text-[13px] text-gray-500 font-medium mt-1.5">Enter your credentials to access the dashboard</p>
+                        <p className="text-[13px] text-gray-500 font-medium mt-1.5">Enter your credentials to access your dashboard</p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-5">
@@ -59,7 +68,7 @@ const SuperAdminLogin: FC = () => {
                             label="Email Address"
                             type="email"
                             required
-                            placeholder="admin@zorocare.com"
+                            placeholder="user@zorocare.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             iconLeft={<FiMail className="w-4 h-4 text-gray-400" />}
@@ -107,11 +116,12 @@ const SuperAdminLogin: FC = () => {
                     <p className="text-center text-[11px] font-medium text-gray-400">
                         Secure Portal • © {new Date().getFullYear()} Zorocare Platform
                     </p>
+                    {/* Quick navigation to super admin for testing */}
                     <button
-                        onClick={() => navigate('/login')}
+                        onClick={() => navigate('/admin-login')}
                         className="text-[10px] font-bold text-gray-400 hover:text-[#5301ab] transition-colors"
                     >
-                        Back to User/Partner Login
+                        Go to Super Admin Login
                     </button>
                 </div>
             </div>
@@ -119,4 +129,4 @@ const SuperAdminLogin: FC = () => {
     );
 };
 
-export default SuperAdminLogin;
+export default CommonLogin;
