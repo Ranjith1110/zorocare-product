@@ -2,9 +2,6 @@ import type { FC } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
-// Website Pages
-import Index from '../pages/website/Index';
-
 // Layouts
 import SuperAdminLayout from '../layouts/SuperAdminLayout';
 import UserLayout from '../layouts/UserLayout';
@@ -49,11 +46,26 @@ import CorporateHealthcheckups from '../pages/corporate/CorporateHealthcheckups'
 import CorporateOtherServices from '../pages/corporate/CorporateOtherServices';
 import CorporateHistory from '../pages/corporate/CorporateHistory';
 
+// Website Pages
+import Index from '../pages/website/Index';
+import About from '../pages/website/About';
+import FamilyCare from '../pages/website/FamilyCare';
+import SmartRing from '../pages/website/SmartRing';
+import Packages from '../pages/website/Package';
+import Contact from '../pages/website/Contact';
+import Service from '../pages/website/Service';
+
 export const AppRoutes: FC = () => {
   return (
     <Routes>
       {/* Public Website Route */}
       <Route path="/" element={<Index />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/service" element={<Service />} />
+      <Route path="/family-care" element={<FamilyCare />} />
+      <Route path="/smart-ring" element={<SmartRing />} />
+      <Route path="/packages" element={<Packages />} />
+      <Route path="/contact" element={<Contact />} />
 
       {/* Smart Dashboard Redirector based on authentication status across all roles */}
       <Route
