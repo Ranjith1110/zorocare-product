@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { ArrowRight, Check, Headset } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 
 const CONTACT_FEATURES = [
     '24/7 Support',

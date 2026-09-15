@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { Heart, ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 
 const CORE_VALUES = [
     'Accessible',

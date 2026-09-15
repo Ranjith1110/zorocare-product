@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { ArrowRight, Check, Activity } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 
 const SERVICE_FEATURES = [
     'Doctor Consultations',
