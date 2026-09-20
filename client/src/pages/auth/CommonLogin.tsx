@@ -116,13 +116,22 @@ const CommonLogin: FC = () => {
                     <p className="text-center text-[11px] font-medium text-gray-400">
                         Secure Portal • © {new Date().getFullYear()} Zorocare Platform
                     </p>
-                    {/* Quick navigation to super admin for testing */}
-                    <button
-                        onClick={() => navigate('/admin-login')}
-                        className="text-[10px] font-bold text-gray-400 hover:text-[#5301ab] transition-colors"
-                    >
-                        Go to Super Admin Login
-                    </button>
+                    {/* Quick navigation to internal admins for testing */}
+                    <div className="flex gap-4 mt-1">
+                        <button
+                            onClick={() => navigate('/admin-login')}
+                            className="text-[10px] font-bold text-gray-400 hover:text-[#5301ab] transition-colors"
+                        >
+                            Admin Login
+                        </button>
+                        <span className="text-gray-300 text-[10px]">|</span>
+                        <button
+                            onClick={() => navigate('/super-admin-login')}
+                            className="text-[10px] font-bold text-gray-400 hover:text-[#5301ab] transition-colors"
+                        >
+                            Super Admin Login
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ import { FiMail, FiLock, FiLogIn, FiShield } from 'react-icons/fi';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 
-const SuperAdminLogin: FC = () => {
+const AdminLogin: FC = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -15,10 +15,10 @@ const SuperAdminLogin: FC = () => {
         e.preventDefault();
         setError('');
 
-        // Static Authentication Logic
-        if (email === 'superadmin@zorocare.com' && password === 'superadmin123') {
-            localStorage.setItem('superadmin_auth', 'true');
-            navigate('/super-admin/dashboard');
+        // Static Authentication Logic for Standard Admin
+        if (email === 'admin@zorocare.com' && password === 'admin123') {
+            localStorage.setItem('admin_auth', 'true');
+            navigate('/admin/dashboard');
         } else {
             setError('Invalid email or password. Please try again.');
         }
@@ -40,7 +40,7 @@ const SuperAdminLogin: FC = () => {
                         Zorocare <span className="text-[#5301ab]">Portal</span>
                     </h1>
                     <p className="text-[13px] font-medium text-gray-500 mt-1.5 uppercase tracking-widest">
-                        Super Admin Access
+                        Admin Access
                     </p>
                 </div>
 
@@ -51,7 +51,7 @@ const SuperAdminLogin: FC = () => {
 
                     <div className="mb-8 text-center">
                         <h2 className="text-[20px] font-bold text-gray-900 leading-tight">Welcome Back</h2>
-                        <p className="text-[13px] text-gray-500 font-medium mt-1.5">Enter your credentials to access the dashboard</p>
+                        <p className="text-[13px] text-gray-500 font-medium mt-1.5">Enter your credentials to access the admin dashboard</p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-5">
@@ -119,4 +119,4 @@ const SuperAdminLogin: FC = () => {
     );
 };
 
-export default SuperAdminLogin;
+export default AdminLogin;

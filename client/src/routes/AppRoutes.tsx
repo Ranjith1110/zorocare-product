@@ -4,12 +4,14 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 // Layouts
 import SuperAdminLayout from '../layouts/SuperAdminLayout';
+import AdminLayout from '../layouts/AdminLayout';
 import UserLayout from '../layouts/UserLayout';
 import InsuranceLayout from '../layouts/InsuranceLayout';
 import CorporateLayout from '../layouts/CorporateLayout';
 
 // Auth Pages
 import SuperAdminLogin from '../pages/auth/SuperAdminLogin';
+import AdminLogin from '../pages/auth/AdminLogin';
 import CommonLogin from '../pages/auth/CommonLogin';
 
 // Super Admin Pages
@@ -20,6 +22,14 @@ import SuperAdminCorporateHub from '../pages/superadmin/SuperAdminCorporateHub';
 import SuperAdminUserHub from '../pages/superadmin/SuperAdminUserHub';
 import SuperAdminMedicalCenters from '../pages/superadmin/SuperAdminMedicalCenters';
 import SuperAdminServiceHub from '../pages/superadmin/SuperAdminServiceHub';
+
+// Admin Pages
+import AdminDashbaord from '../pages/admin/AdminDashbaord';
+import AdminInsuranceHub from '../pages/admin/AdminInsuranceHub';
+import AdminCorporateHub from '../pages/admin/AdminCorporateHub';
+import AdminUserHub from '../pages/admin/AdminUserHub';
+import AdminMedicalCenters from '../pages/admin/AdminMedicalCenters';
+import AdminServiceHub from '../pages/admin/AdminServiceHub';
 
 // User Pages
 import UserDashboard from '../pages/user/UserDashboard';
@@ -72,22 +82,24 @@ export const AppRoutes: FC = () => {
         path="/dashboard"
         element={
           localStorage.getItem('superadmin_auth') === 'true' ? <Navigate to="/super-admin/dashboard" replace /> :
-            localStorage.getItem('insurance_auth') === 'true' ? <Navigate to="/insurance/dashboard" replace /> :
-              localStorage.getItem('corporate_auth') === 'true' ? <Navigate to="/corporate/dashboard" replace /> :
-                localStorage.getItem('user_auth') === 'true' ? <Navigate to="/user/dashboard" replace /> :
-                  <Navigate to="/login" replace />
+            localStorage.getItem('admin_auth') === 'true' ? <Navigate to="/admin/dashboard" replace /> :
+              localStorage.getItem('insurance_auth') === 'true' ? <Navigate to="/insurance/dashboard" replace /> :
+                localStorage.getItem('corporate_auth') === 'true' ? <Navigate to="/corporate/dashboard" replace /> :
+                  localStorage.getItem('user_auth') === 'true' ? <Navigate to="/user/dashboard" replace /> :
+                    <Navigate to="/login" replace />
         }
       />
 
       {/* Public Login Routes */}
       <Route path="/login" element={<CommonLogin />} />
-      <Route path="/admin-login" element={<SuperAdminLogin />} />
+      <Route path="/super-admin-login" element={<SuperAdminLogin />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
 
       {/* Protected Super Admin Routes */}
       <Route
         path="/super-admin"
         element={
-          <ProtectedRoute authKey="superadmin_auth" redirectTo="/admin-login">
+          <ProtectedRoute authKey="superadmin_auth" redirectTo="/super-admin-login">
             <SuperAdminLayout />
           </ProtectedRoute>
         }
@@ -100,6 +112,24 @@ export const AppRoutes: FC = () => {
         <Route path="user-hub" element={<SuperAdminUserHub />} />
         <Route path="medical-centers" element={<SuperAdminMedicalCenters />} />
         <Route path="service-hub" element={<SuperAdminServiceHub />} />
+      </Route>
+
+      {/* Protected Admin Routes (No Administration Tab) */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute authKey="admin_auth" redirectTo="/admin-login">
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashbaord />} />
+        <Route path="insurance-hub" element={<AdminInsuranceHub />} />
+        <Route path="corporate-hub" element={<AdminCorporateHub />} />
+        <Route path="user-hub" element={<AdminUserHub />} />
+        <Route path="medical-centers" element={<AdminMedicalCenters />} />
+        <Route path="service-hub" element={<AdminServiceHub />} />
       </Route>
 
       {/* Protected User Routes */}
