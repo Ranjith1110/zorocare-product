@@ -1,43 +1,47 @@
-import type { FC, InputHTMLAttributes } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
-interface ToggleSwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-    theme?: 'purple' | 'pink' | 'emerald' | 'blue' | 'red' | 'teal' | 'orange';
+interface ToggleSwitchProps {
+    defaultChecked?: boolean;
+    checked?: boolean;
+    onChange?: (checked: boolean) => void;
+    theme?: 'purple' | 'orange' | 'emerald' | 'blue' | 'red' | 'teal' | 'pink';
+    disabled?: boolean;
 }
 
 const ToggleSwitch: FC<ToggleSwitchProps> = ({
+    defaultChecked,
     checked,
-    defaultChecked = false,
     onChange,
-    name,
     theme = 'purple',
-    disabled = false,
-    ...props
+    disabled = false
 }) => {
-    const themeColors: Record<string, string> = {
-        purple: 'peer-checked:bg-[#5301ab]',
-        pink: 'peer-checked:bg-pink-500',
-        emerald: 'peer-checked:bg-emerald-500',
-        blue: 'peer-checked:bg-blue-600',
-        red: 'peer-checked:bg-red-500',
-        teal: 'peer-checked:bg-teal-500',
-        orange: 'peer-checked:bg-orange-500',
+    const getThemeColor = () => {
+        if (disabled) return 'peer-checked:bg-gray-400';
+
+        switch (theme) {
+            case 'orange': return 'peer-checked:bg-orange-500';
+            case 'emerald': return 'peer-checked:bg-emerald-500';
+            case 'blue': return 'peer-checked:bg-blue-600';
+            case 'red': return 'peer-checked:bg-red-600';
+            case 'teal': return 'peer-checked:bg-teal-500';
+            case 'pink': return 'peer-checked:bg-pink-500';
+            case 'purple':
+            default: return 'peer-checked:bg-[#5301ab]';
+        }
     };
 
-    const activeColor = themeColors[theme] || themeColors.purple;
-
     return (
-        <label className={`relative inline-flex items-center ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}>
+        <label className={`relative inline-flex items-center ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}>
             <input
                 type="checkbox"
-                name={name}
                 className="sr-only peer"
-                defaultChecked={defaultChecked}
                 checked={checked}
-                onChange={onChange}
+                defaultChecked={defaultChecked}
                 disabled={disabled}
-                {...props}
+                onChange={(e) => onChange && onChange(e.target.checked)}
             />
-            <div className={`w-8 h-4.5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all ${activeColor}`}></div>
+            <div className={`w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all ${getThemeColor()}`}></div>
         </label>
     );
 };

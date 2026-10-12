@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMail, FiLock, FiLogIn, FiShield } from 'react-icons/fi';
+import { FiMail, FiLock, FiLogIn, FiShield, FiLoader } from 'react-icons/fi';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 
@@ -10,17 +10,59 @@ const AdminLogin: FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
-        // Static Authentication Logic for Standard Admin
-        if (email === 'admin@zorocare.com' && password === 'admin123') {
+        // CLEAR CONFLICTING SESSIONS FIRST
+        // If an old Super Admin, Corporate, or Insurance token exists, it causes 
+        // the NavBar to misinterpret the role on subsequent page loads.
+        localStorage.removeItem('superadmin_auth');
+        localStorage.removeItem('superadmin_token');
+        localStorage.removeItem('corporate_auth');
+        localStorage.removeItem('corporate_token');
+        localStorage.removeItem('insurance_auth');
+        localStorage.removeItem('insurance_token');
+        localStorage.removeItem('user_auth');
+        localStorage.removeItem('user_token');
+
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+        try {
+            const response = await fetch(`${API_URL}/api/admin/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Invalid email or password.');
+            }
+
+            // Save authentication details & permissions specifically for standard Admin
             localStorage.setItem('admin_auth', 'true');
+            localStorage.setItem('admin_token', data.token);
+
+            if (data.user) {
+                localStorage.setItem('admin_user', JSON.stringify(data.user));
+                // Store module permissions so the AdminLayout/Sidebar can read them
+                if (data.user.permissions) {
+                    localStorage.setItem('admin_permissions', JSON.stringify(data.user.permissions));
+                }
+            }
+
             navigate('/admin/dashboard');
-        } else {
-            setError('Invalid email or password. Please try again.');
+        } catch (err: any) {
+            setError(err.message || 'Login failed. Please check server connection.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -94,10 +136,11 @@ const AdminLogin: FC = () => {
                             <Button
                                 type="submit"
                                 variant="primary"
-                                className="w-full !py-3.5 !text-[14px] !bg-[#5301ab] hover:!bg-[#43008a] shadow-md shadow-[#5301ab]/20"
-                                icon={<FiLogIn className="w-4 h-4" />}
+                                disabled={loading}
+                                className="w-full !py-3.5 !text-[14px] !bg-[#5301ab] hover:!bg-[#43008a] shadow-md shadow-[#5301ab]/20 flex items-center justify-center gap-2"
+                                icon={loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiLogIn className="w-4 h-4" />}
                             >
-                                Sign In
+                                {loading ? 'Signing In...' : 'Sign In'}
                             </Button>
                         </div>
                     </form>

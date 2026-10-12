@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMail, FiLock, FiLogIn, FiShield } from 'react-icons/fi';
+import { FiMail, FiLock, FiLogIn, FiShield, FiLoader } from 'react-icons/fi';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 
@@ -10,28 +10,51 @@ const SuperAdminLogin: FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
-        // Static Authentication Logic
-        if (email === 'superadmin@zorocare.com' && password === 'superadmin123') {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+        try {
+            const response = await fetch(`${API_URL}/api/auth/super-admin/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Invalid email or password.');
+            }
+
+            // Save authentication details
             localStorage.setItem('superadmin_auth', 'true');
+            localStorage.setItem('superadmin_token', data.token);
+            if (data.user) {
+                localStorage.setItem('superadmin_user', JSON.stringify(data.user));
+            }
+
             navigate('/super-admin/dashboard');
-        } else {
-            setError('Invalid email or password. Please try again.');
+        } catch (err: any) {
+            setError(err.message || 'Login failed. Please check server connection.');
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-gray-50/50 p-4 sm:p-6 relative overflow-hidden">
-            {/* Background Decorative Elements */}
             <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-br from-[#5301ab]/10 via-[#9333ea]/5 to-transparent -translate-y-20 transform skew-y-3 -z-10"></div>
             <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#fd5800]/5 rounded-full blur-3xl -z-10 translate-x-1/3 translate-y-1/3"></div>
 
             <div className="w-full max-w-[420px] animate-in fade-in slide-in-from-bottom-8 duration-700">
-                {/* Logo / Branding Area */}
                 <div className="flex flex-col items-center mb-8">
                     <div className="w-16 h-16 bg-gradient-to-br from-[#7315e0] to-[#5301ab] rounded-2xl flex items-center justify-center shadow-lg shadow-[#5301ab]/20 mb-4">
                         <FiShield className="w-8 h-8 text-white" />
@@ -44,9 +67,7 @@ const SuperAdminLogin: FC = () => {
                     </p>
                 </div>
 
-                {/* Login Card */}
                 <div className="bg-white rounded-[2.5rem] shadow-[0_8px_30px_-10px_rgba(0,0,0,0.08)] border border-gray-100 p-8 sm:p-10 relative overflow-hidden">
-                    {/* Top border highlight */}
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#5301ab] to-[#fd5800]"></div>
 
                     <div className="mb-8 text-center">
@@ -94,10 +115,11 @@ const SuperAdminLogin: FC = () => {
                             <Button
                                 type="submit"
                                 variant="primary"
-                                className="w-full !py-3.5 !text-[14px] !bg-[#5301ab] hover:!bg-[#43008a] shadow-md shadow-[#5301ab]/20"
-                                icon={<FiLogIn className="w-4 h-4" />}
+                                disabled={loading}
+                                className="w-full !py-3.5 !text-[14px] !bg-[#5301ab] hover:!bg-[#43008a] shadow-md shadow-[#5301ab]/20 flex items-center justify-center gap-2"
+                                icon={loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiLogIn className="w-4 h-4" />}
                             >
-                                Sign In
+                                {loading ? 'Signing In...' : 'Sign In'}
                             </Button>
                         </div>
                     </form>

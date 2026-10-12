@@ -7,26 +7,85 @@ import { MdSubscriptions } from "react-icons/md";
 interface NavLink {
     name: string;
     path: string;
+    permissionKey?: string;
 }
 
 const AdminNavbar: FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    
+    const [adminName, setAdminName] = useState('Admin');
+    const [adminEmail, setAdminEmail] = useState('admin@zorocare.com');
+    const [visibleLinks, setVisibleLinks] = useState<NavLink[]>([]);
+
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Removed the "Administration" tab as requested
-    const navLinks: NavLink[] = [
-        { name: 'Dashboard', path: '/admin/dashboard' },
-        { name: 'Insurance Hub', path: '/admin/insurance-hub' },
-        { name: 'Corporate Hub', path: '/admin/corporate-hub' },
-        { name: 'User Hub', path: '/admin/user-hub' },
-        { name: 'Medical Centers', path: '/admin/medical-centers' },
-        { name: 'Service Hub', path: '/admin/service-hub' },
-    ];
+    // Re-calculate permissions, profile info, and links on every route change
+    useEffect(() => {
+        const isSuperAdmin = localStorage.getItem('superadmin_auth') === 'true';
+        const isAdmin = localStorage.getItem('admin_auth') === 'true';
+
+        // 1. Resolve Profile Data
+        const storedUser = localStorage.getItem('admin_user');
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                setAdminName(parsedUser.name || 'Admin');
+                setAdminEmail(parsedUser.email || 'admin@zorocare.com');
+            } catch (e) {
+                console.error('Error parsing admin user data', e);
+            }
+        } else if (isSuperAdmin) {
+            setAdminName('Super Admin');
+            setAdminEmail('superadmin@zorocare.com');
+        }
+
+        // 2. Resolve Navigation Links based on Roles & Permissions
+        if (isSuperAdmin) {
+            // Super Admins automatically see all core modules under the /super-admin/ prefix
+            setVisibleLinks([
+                { name: 'Dashboard', path: '/super-admin/dashboard' },
+                { name: 'Administration', path: '/super-admin/administration' },
+                { name: 'Insurance Hub', path: '/super-admin/insurance-hub' },
+                { name: 'Corporate Hub', path: '/super-admin/corporate-hub' },
+                { name: 'User Hub', path: '/super-admin/user-hub' },
+                { name: 'Medical Centers', path: '/super-admin/medical-centers' },
+                { name: 'Service Hub', path: '/super-admin/service-hub' },
+            ]);
+        } else if (isAdmin) {
+            // Standard Admins have routes dynamically filtered by their JSON permissions
+            let permissions: any = {};
+            const storedPerms = localStorage.getItem('admin_permissions');
+            if (storedPerms) {
+                try {
+                    permissions = JSON.parse(storedPerms);
+                } catch (e) {
+                    console.error('Error parsing admin permissions', e);
+                }
+            }
+
+            const standardAdminLinks = [
+                { name: 'Dashboard', path: '/admin/dashboard', permissionKey: 'viewDashboard' },
+                { name: 'Insurance Hub', path: '/admin/insurance-hub', permissionKey: 'manageInsurance' },
+                { name: 'Corporate Hub', path: '/admin/corporate-hub', permissionKey: 'manageCorporate' },
+                { name: 'User Hub', path: '/admin/user-hub', permissionKey: 'manageUsers' },
+                { name: 'Medical Centers', path: '/admin/medical-centers', permissionKey: 'clinicDashboard' },
+                { name: 'Service Hub', path: '/admin/service-hub', permissionKey: 'manageServices' },
+            ].filter(link => !link.permissionKey || permissions[link.permissionKey] === true);
+
+            setVisibleLinks(standardAdminLinks);
+        } else {
+            setVisibleLinks([]);
+        }
+    }, [location.pathname]); // The dependency guarantees UI refreshes when switching tabs
 
     const handleLogout = () => {
         localStorage.removeItem('admin_auth');
+        localStorage.removeItem('superadmin_auth');
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        localStorage.removeItem('admin_permissions');
         navigate('/admin-login');
     };
 
@@ -60,16 +119,18 @@ const AdminNavbar: FC = () => {
                 <div className="flex items-center justify-end gap-3 lg:gap-6 flex-1 overflow-hidden">
                     <div className="hidden lg:flex items-center flex-1 justify-end overflow-hidden">
                         <nav className="flex items-center gap-1 bg-white/90 p-1.5 rounded-full border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-full">
-                            {navLinks.map((link) => {
-                                const isActive = location.pathname.includes(link.path);
+                            {visibleLinks.map((link) => {
+                                // StartsWith guarantees nested routes keep the parent button active
+                                const isActive = location.pathname.startsWith(link.path);
                                 return (
                                     <Link
                                         key={link.name}
                                         to={link.path}
-                                        className={`rounded-full px-4 py-2 text-[13px] font-semibold whitespace-nowrap transition-all duration-300 shrink-0 ${isActive
-                                            ? 'bg-[#5301ab] text-white shadow-md'
-                                            : 'text-gray-500 hover:bg-gray-50 hover:text-[#5301ab]'
-                                            }`}
+                                        className={`rounded-full px-4 py-2 text-[13px] font-semibold whitespace-nowrap transition-all duration-300 shrink-0 ${
+                                            isActive
+                                                ? 'bg-[#5301ab] text-white shadow-md'
+                                                : 'text-gray-500 hover:bg-gray-50 hover:text-[#5301ab]'
+                                        }`}
                                     >
                                         {link.name}
                                     </Link>
@@ -94,9 +155,9 @@ const AdminNavbar: FC = () => {
                         <div className="relative hidden lg:block">
                             <button
                                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0"
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0 font-bold"
                             >
-                                <FiUser className="w-5 h-5" />
+                                {adminName.charAt(0).toUpperCase()}
                             </button>
 
                             {/* Profile Dropdown */}
@@ -106,10 +167,10 @@ const AdminNavbar: FC = () => {
                                         className="fixed inset-0 z-40"
                                         onClick={() => setIsProfileMenuOpen(false)}
                                     ></div>
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                                        <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                                            <p className="text-[13px] font-bold text-gray-900 truncate">Admin</p>
-                                            <p className="text-[11px] font-medium text-gray-500 truncate">admin@zorocare.com</p>
+                                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="px-4 py-3 border-b border-gray-50 mb-1">
+                                            <p className="text-[14px] font-bold text-gray-900 truncate">{adminName}</p>
+                                            <p className="text-[12px] font-medium text-gray-500 truncate">{adminEmail}</p>
                                         </div>
                                         <button
                                             onClick={handleLogout}
@@ -143,14 +204,16 @@ const AdminNavbar: FC = () => {
             </header>
 
             <div
-                className={`fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-                    }`}
+                className={`fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+                    isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
                 onClick={() => setIsMobileMenuOpen(false)}
             />
 
             <div
-                className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-white shadow-2xl transition-transform duration-400 ease-[cubic-bezier(0.25,0.8,0.25,1)] lg:hidden flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
+                className={`fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-white shadow-2xl transition-transform duration-400 ease-[cubic-bezier(0.25,0.8,0.25,1)] lg:hidden flex flex-col ${
+                    isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                }`}
             >
                 <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-white shrink-0">
                     <img
@@ -167,16 +230,17 @@ const AdminNavbar: FC = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-1.5 scroll-smooth">
-                    {navLinks.map((link) => {
-                        const isActive = location.pathname.includes(link.path);
+                    {visibleLinks.map((link) => {
+                        const isActive = location.pathname.startsWith(link.path);
                         return (
                             <Link
                                 key={`mobile-${link.name}`}
                                 to={link.path}
-                                className={`w-full flex rounded-2xl px-5 py-4 text-left text-[15px] font-bold transition-all ${isActive
-                                    ? 'bg-[#5301ab] text-white shadow-md'
-                                    : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'
-                                    }`}
+                                className={`w-full flex rounded-2xl px-5 py-4 text-left text-[15px] font-bold transition-all ${
+                                    isActive
+                                        ? 'bg-[#5301ab] text-white shadow-md'
+                                        : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'
+                                }`}
                             >
                                 {link.name}
                             </Link>
@@ -185,6 +249,10 @@ const AdminNavbar: FC = () => {
                 </div>
 
                 <div className="p-5 border-t border-gray-100 bg-gray-50/80 space-y-3 shrink-0">
+                    <div className="mb-4 pl-1">
+                        <p className="text-[13px] font-bold text-gray-900 truncate">{adminName}</p>
+                        <p className="text-[11px] font-medium text-gray-500 truncate">{adminEmail}</p>
+                    </div>
                     <button className="flex w-full items-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">
                         <MdSubscriptions className="w-5 h-5 text-gray-400" />
                         Subscriptions

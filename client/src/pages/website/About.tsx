@@ -1,7 +1,7 @@
 import AboutHero from "../../components/website/about/AboutHero"
-import CompleteCare from "../../components/website/about/CompleteCare"
-import CorePillars from "../../components/website/about/CorePillars"
+import OurStory from "../../components/website/about/OurStory"
 import VisionMission from "../../components/website/about/VisionMission"
+import WhatWeBelieve from "../../components/website/about/WhatWeBelieve"
 import Footer from "../../components/website/Footer"
 import Navbar from "../../components/website/Navbar"
 
@@ -10,9 +10,9 @@ const About = () => {
         <>
             <Navbar />
             <AboutHero />
+            <OurStory />
             <VisionMission />
-            <CorePillars />
-            <CompleteCare />
+            <WhatWeBelieve />
             <Footer />
         </>
     )

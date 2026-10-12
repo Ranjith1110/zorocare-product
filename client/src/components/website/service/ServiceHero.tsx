@@ -3,16 +3,15 @@ import gsap from 'gsap';
 import { ArrowRight, Check } from 'lucide-react';
 
 const SERVICE_FEATURES = [
-    'Doctor Consultations',
-    'Pharmacy Delivery',
-    'Home Diagnostics',
-    'Elder Care'
+    'Consultations',
+    'Diagnostics',
+    'Preventive Wellness',
+    'Family Care'
 ];
 
 const ServiceHero: React.FC = () => {
     const sectionRef = useRef<HTMLElement | null>(null);
     const watermarkRef = useRef<HTMLSpanElement | null>(null);
-    const preHeadingRef = useRef<HTMLDivElement | null>(null);
     const headingRef = useRef<HTMLHeadingElement | null>(null);
     const textRef = useRef<HTMLParagraphElement | null>(null);
     const pillsRef = useRef<HTMLDivElement | null>(null);
@@ -25,7 +24,6 @@ const ServiceHero: React.FC = () => {
             if (prefersReducedMotion) {
                 gsap.set([
                     watermarkRef.current,
-                    preHeadingRef.current,
                     headingRef.current,
                     textRef.current,
                     pillsRef.current,
@@ -41,7 +39,6 @@ const ServiceHero: React.FC = () => {
             const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
             tl.fromTo(watermarkRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 })
-                .fromTo(preHeadingRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.6 }, '-=0.5')
                 .fromTo(headingRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
                 .fromTo(textRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
                 .fromTo(
@@ -83,16 +80,16 @@ const ServiceHero: React.FC = () => {
                         </span>
 
                         <h1 ref={headingRef} className="relative z-10 flex flex-col text-5xl font-extrabold tracking-tight text-[#fcfbf7] sm:text-6xl lg:text-[4.5rem]">
-                            <span>Comprehensive care for</span>
+                            <span>Healthcare Services</span>
                             <span className="bg-gradient-to-r from-[#5301ab] via-[#a236d2] to-[#fd5800] bg-clip-text pb-2 text-transparent">
-                                your every need.
+                                Built Around You.
                             </span>
                         </h1>
                     </div>
 
                     {/* Paragraph */}
                     <p ref={textRef} className="relative mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-gray-300 font-medium">
-                        From online doctor consultations and at-home lab tests to pharmacy delivery and elder care, explore a complete ecosystem of healthcare services designed around you.
+                        From consultations and diagnostics to preventive wellness and family care, Zorocare brings essential healthcare services together through a connected ecosystem.
                     </p>
 
                     {/* Feature Pills */}

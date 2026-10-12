@@ -4,30 +4,115 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FiBell, FiUser, FiMenu, FiX, FiLogOut } from 'react-icons/fi';
 import { MdSubscriptions } from "react-icons/md";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 interface NavLink {
     name: string;
     path: string;
+    permissionKeys?: string[]; // Array to allow matching if ANY of the sub-permissions are true
 }
 
 const CorporateNavbar: FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+    // Initialized empty to strictly enforce REAL DATA from backend
+    const [corpName, setCorpName] = useState('');
+    const [corpEmail, setCorpEmail] = useState('');
+    const [corpLogo, setCorpLogo] = useState<string | null>(null);
+    const [visibleLinks, setVisibleLinks] = useState<NavLink[]>([]);
+
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Corporate Management is removed from this navigation
-    const navLinks: NavLink[] = [
-        { name: 'Dashboard', path: '/corporate/dashboard' },
-        { name: 'User Management', path: '/corporate/user-management' },
-        { name: 'Sponsored Services', path: '/corporate/sponsored-services' },
-        { name: 'Healthcheckups', path: '/corporate/healthcheckups' },
-        { name: 'Other Services', path: '/corporate/other-services' },
+    // Master list of Corporate routes mapped directly to SuperAdmin permission keys
+    const allNavLinks: NavLink[] = [
+        { name: 'Dashboard', path: '/corporate/dashboard', permissionKeys: ['viewDashboard'] },
+        { name: 'User Management', path: '/corporate/user-management', permissionKeys: ['uploadUser', 'allUsers'] },
+        { name: 'Sponsored Services', path: '/corporate/sponsored-services', permissionKeys: ['sponsoredServices'] },
+        { name: 'Healthcheckups', path: '/corporate/healthcheckups', permissionKeys: ['healthcheckups'] },
+        { name: 'Wellness Services', path: '/corporate/wellness-services', permissionKeys: ['wellnessServices'] },
+        { name: 'Care Programs', path: '/corporate/care-programs', permissionKeys: ['carePrograms'] },
+        { name: 'Dental', path: '/corporate/dental', permissionKeys: ['dental'] },
         { name: 'History', path: '/corporate/history' },
     ];
 
+    useEffect(() => {
+        const isAuth = localStorage.getItem('corporate_auth') === 'true';
+
+        if (isAuth) {
+            // 1. Resolve Auth Email from LocalStorage
+            const storedUser = localStorage.getItem('corporate_user');
+            if (storedUser) {
+                try {
+                    const parsedUser = JSON.parse(storedUser);
+                    setCorpEmail(parsedUser.email || '');
+
+                    // 2. FETCH LIVE DATA FROM BACKEND (Same endpoint used in SuperAdminCorporateHubCom)
+                    const fetchLiveCorporateData = async () => {
+                        try {
+                            const res = await fetch(`${API_URL}/api/superadmin/corporates`);
+                            const data = await res.json();
+                            
+                            if (data.success && data.data) {
+                                // Match the logged-in email to the master corporate database list
+                                const currentCorp = data.data.find((c: any) => c.email.toLowerCase() === parsedUser.email.toLowerCase());
+                                
+                                if (currentCorp) {
+                                    setCorpName(currentCorp.name);
+                                    if (currentCorp.logo_url && currentCorp.logo_url.trim() !== '') {
+                                        setCorpLogo(currentCorp.logo_url);
+                                    }
+                                } else {
+                                    // Fallback to local storage if corporate is deleted or unfound
+                                    setCorpName(parsedUser.name || 'Corporate Admin');
+                                    if (parsedUser.logo_url) setCorpLogo(parsedUser.logo_url);
+                                }
+                            }
+                        } catch (err) {
+                            console.error('Failed to fetch live corporate data', err);
+                            // Fallback to local storage on network error
+                            setCorpName(parsedUser.name || 'Corporate Admin');
+                            if (parsedUser.logo_url) setCorpLogo(parsedUser.logo_url);
+                        }
+                    };
+
+                    fetchLiveCorporateData();
+
+                } catch (e) {
+                    console.error('Error parsing corporate user data', e);
+                }
+            }
+
+            // 3. Resolve Dynamic Permissions toggled by Super Admin
+            let permissions: any = {};
+            const storedPerms = localStorage.getItem('corporate_permissions');
+            if (storedPerms) {
+                try {
+                    permissions = JSON.parse(storedPerms);
+                } catch (e) {
+                    console.error('Error parsing corporate permissions', e);
+                }
+            }
+
+            // 4. Filter Navigation Links dynamically
+            const filteredLinks = allNavLinks.filter(link => {
+                if (!link.permissionKeys || link.permissionKeys.length === 0) return true; 
+                return link.permissionKeys.some(key => permissions[key] === true);
+            });
+
+            setVisibleLinks(filteredLinks);
+        } else {
+            setVisibleLinks([]);
+        }
+    }, [location.pathname]); 
+
     const handleLogout = () => {
-        localStorage.removeItem('superadmin_auth');
-        localStorage.removeItem('user_auth');
+        // Clear all session tokens securely
+        localStorage.removeItem('corporate_auth');
+        localStorage.removeItem('corporate_token');
+        localStorage.removeItem('corporate_user');
+        localStorage.removeItem('corporate_permissions');
         navigate('/login');
     };
 
@@ -60,19 +145,25 @@ const CorporateNavbar: FC = () => {
 
                     <div className="h-6 md:h-8 w-[1px] bg-gray-300 rounded-full"></div>
 
-                    {/* Dummy Corporate Partner Logo */}
-                    <img
-                        src="/IndiGo-logo.avif"
-                        alt="Corporate Partner Logo"
-                        className="h-8 md:h-12 w-auto object-contain"
-                    />
+                    {/* Live Corporate Partner Logo fetched directly from DB */}
+                    {corpLogo ? (
+                        <img
+                            src={corpLogo}
+                            alt={`${corpName} Logo`}
+                            className="h-8 md:h-12 w-auto object-contain rounded-md"
+                        />
+                    ) : (
+                        <div className="h-8 md:h-10 w-8 md:w-10 rounded-full bg-purple-100 flex items-center justify-center text-[#5301ab] font-black text-xl">
+                            {corpName ? corpName.charAt(0).toUpperCase() : 'C'}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex items-center justify-end gap-3 lg:gap-6 flex-1 overflow-hidden">
                     <div className="hidden xl:flex items-center flex-1 justify-end overflow-hidden">
                         <nav className="flex items-center gap-1 bg-white/90 p-1.5 rounded-full border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-full">
-                            {navLinks.map((link) => {
-                                const isActive = location.pathname.includes(link.path);
+                            {visibleLinks.map((link) => {
+                                const isActive = location.pathname.startsWith(link.path);
                                 return (
                                     <Link
                                         key={link.name}
@@ -105,9 +196,9 @@ const CorporateNavbar: FC = () => {
                         <div className="relative hidden lg:block">
                             <button
                                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0"
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0 font-bold text-lg"
                             >
-                                <FiUser className="w-5 h-5" />
+                                {corpName ? corpName.charAt(0).toUpperCase() : 'C'}
                             </button>
 
                             {/* Profile Dropdown */}
@@ -117,10 +208,10 @@ const CorporateNavbar: FC = () => {
                                         className="fixed inset-0 z-40"
                                         onClick={() => setIsProfileMenuOpen(false)}
                                     ></div>
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                                        <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                                            <p className="text-[13px] font-bold text-gray-900 truncate">Corporate Admin</p>
-                                            <p className="text-[11px] font-medium text-gray-500 truncate">admin@company.com</p>
+                                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="px-4 py-3 border-b border-gray-50 mb-1">
+                                            <p className="text-[14px] font-bold text-gray-900 truncate">{corpName}</p>
+                                            <p className="text-[12px] font-medium text-gray-500 truncate">{corpEmail}</p>
                                         </div>
                                         <button
                                             onClick={handleLogout}
@@ -143,7 +234,7 @@ const CorporateNavbar: FC = () => {
                         </button>
 
                         <button
-                            className="xl:hidden flex h-10 w-10 items-center justify-center rounded-md bg-white shadow-sm border border-gray-100 text-gray-700 hover:text-[#5301ab] transition-colors shrink-0"
+                            className="xl:hidden flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm border border-gray-100 text-gray-700 hover:text-[#5301ab] transition-colors shrink-0"
                             onClick={() => setIsMobileMenuOpen(true)}
                         >
                             <FiMenu className="w-6 h-6" />
@@ -163,10 +254,14 @@ const CorporateNavbar: FC = () => {
                     }`}
             >
                 <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-white shrink-0">
-                    <div className="flex items-center gap-2">
-                        <img src="/logo-stright.png" alt="Zoro Care" className="h-6 w-auto object-contain" />
-                        <div className="h-4 w-[1px] bg-gray-300 rounded-full"></div>
-                        <img src="/IndiGo-logo.avif" alt="Corporate Partner" className="h-6 w-auto object-contain" />
+                    <div className="flex items-center gap-2 max-w-[75%]">
+                        <img src="/logo-stright.png" alt="Zoro Care" className="h-6 w-auto object-contain shrink-0" />
+                        <div className="h-4 w-[1px] bg-gray-300 rounded-full shrink-0"></div>
+                        {corpLogo ? (
+                            <img src={corpLogo} alt="Corporate Partner" className="h-6 w-auto object-contain shrink-0 rounded-sm" />
+                        ) : (
+                            <span className="text-[12px] font-bold text-[#5301ab] truncate">{corpName}</span>
+                        )}
                     </div>
                     <button
                         onClick={() => setIsMobileMenuOpen(false)}
@@ -177,13 +272,13 @@ const CorporateNavbar: FC = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-1.5 scroll-smooth">
-                    {navLinks.map((link) => {
-                        const isActive = location.pathname.includes(link.path);
+                    {visibleLinks.map((link) => {
+                        const isActive = location.pathname.startsWith(link.path);
                         return (
                             <Link
                                 key={`mobile-${link.name}`}
                                 to={link.path}
-                                className={`w-full flex rounded-md px-5 py-4 text-left text-[15px] font-bold transition-all ${isActive
+                                className={`w-full flex rounded-2xl px-5 py-4 text-left text-[15px] font-bold transition-all ${isActive
                                     ? 'bg-[#5301ab] text-white shadow-md'
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'
                                     }`}
@@ -195,13 +290,17 @@ const CorporateNavbar: FC = () => {
                 </div>
 
                 <div className="p-5 border-t border-gray-100 bg-gray-50/80 space-y-3 shrink-0">
-                    <button className="flex w-full items-center gap-3 rounded-md bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">
+                    <div className="mb-4 pl-1">
+                        <p className="text-[13px] font-bold text-gray-900 truncate">{corpName}</p>
+                        <p className="text-[11px] font-medium text-gray-500 truncate">{corpEmail}</p>
+                    </div>
+                    <button className="flex w-full items-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">
                         <MdSubscriptions className="w-5 h-5 text-gray-400" />
                         Subscriptions
                     </button>
                     <button
                         onClick={handleLogout}
-                        className="flex w-full items-center gap-3 rounded-md bg-[#fd5800]/10 px-5 py-3.5 text-[14px] font-bold text-[#fd5800] hover:bg-[#fd5800]/20 transition-colors"
+                        className="flex w-full items-center gap-3 rounded-2xl bg-[#fd5800]/10 px-5 py-3.5 text-[14px] font-bold text-[#fd5800] hover:bg-[#fd5800]/20 transition-colors"
                     >
                         <FiLogOut className="w-5 h-5" />
                         Logout

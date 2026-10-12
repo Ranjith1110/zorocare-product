@@ -7,27 +7,84 @@ import { MdSubscriptions } from "react-icons/md";
 interface NavLink {
     name: string;
     path: string;
+    permissionKeys?: string[]; // Array to allow matching if ANY of the sub-permissions are true
 }
 
 const InsuranceNavbar: FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    
+    const [insuranceName, setInsuranceName] = useState('Insurance Admin');
+    const [insuranceEmail, setInsuranceEmail] = useState('admin@zorocare.com');
+    const [insuranceLogo, setInsuranceLogo] = useState<string | null>(null);
+    const [visibleLinks, setVisibleLinks] = useState<NavLink[]>([]);
+
     const location = useLocation();
     const navigate = useNavigate();
 
-    const navLinks: NavLink[] = [
-        { name: 'Dashboard', path: '/insurance/dashboard' },
-        { name: 'Corporate Management', path: '/insurance/corporate-management' },
-        { name: 'User Management', path: '/insurance/user-management' },
-        { name: 'Sponsored Services', path: '/insurance/sponsored-services' },
-        { name: 'Healthcheckups', path: '/insurance/healthcheckups' },
-        { name: 'Other Services', path: '/insurance/other-services' },
-        { name: 'History', path: '/insurance/history' },
+    // The Master list of all possible Insurance routes mapping directly to SuperAdmin permission keys
+    const allNavLinks: NavLink[] = [
+        { name: 'Dashboard', path: '/insurance/dashboard', permissionKeys: ['viewDashboard'] },
+        { name: 'Corporate Management', path: '/insurance/corporate-management', permissionKeys: ['createCorporate', 'listCorporates'] },
+        { name: 'User Management', path: '/insurance/user-management', permissionKeys: ['uploadUser', 'allUsers'] },
+        { name: 'Sponsored Services', path: '/insurance/sponsored-services', permissionKeys: ['sponsoredServices'] },
+        { name: 'Healthcheckups', path: '/insurance/healthcheckups', permissionKeys: ['healthcheckups'] },
+        // Combining Wellness and Care Programs into one overarching tab for cleaner UI as requested
+        { name: 'Other Services', path: '/insurance/other-services', permissionKeys: ['wellnessServices', 'carePrograms'] },
+        { name: 'History', path: '/insurance/history' }, // History is always visible
     ];
 
+    useEffect(() => {
+        const isAuth = localStorage.getItem('insurance_auth') === 'true';
+
+        if (isAuth) {
+            // 1. Resolve Profile Data
+            const storedUser = localStorage.getItem('insurance_user');
+            if (storedUser) {
+                try {
+                    const parsedUser = JSON.parse(storedUser);
+                    setInsuranceName(parsedUser.name || 'Insurance Admin');
+                    setInsuranceEmail(parsedUser.email || 'admin@zorocare.com');
+                    if (parsedUser.logo_url && parsedUser.logo_url.trim() !== '') {
+                        setInsuranceLogo(parsedUser.logo_url);
+                    }
+                } catch (e) {
+                    console.error('Error parsing insurance user data', e);
+                }
+            }
+
+            // 2. Resolve Dynamic Permissions
+            let permissions: any = {};
+            const storedPerms = localStorage.getItem('insurance_permissions');
+            if (storedPerms) {
+                try {
+                    permissions = JSON.parse(storedPerms);
+                } catch (e) {
+                    console.error('Error parsing insurance permissions', e);
+                }
+            }
+
+            // 3. Filter Navigation Links
+            const filteredLinks = allNavLinks.filter(link => {
+                if (!link.permissionKeys || link.permissionKeys.length === 0) return true; // Show if no restrictions
+                
+                // If the link has multiple required keys (like User Management needing either Upload or List), 
+                // show the tab if ANY of the sub-permissions are true. The actual page will handle inner restrictions.
+                return link.permissionKeys.some(key => permissions[key] === true);
+            });
+
+            setVisibleLinks(filteredLinks);
+        } else {
+            setVisibleLinks([]);
+        }
+    }, [location.pathname]);
+
     const handleLogout = () => {
-        localStorage.removeItem('superadmin_auth');
-        localStorage.removeItem('user_auth');
+        // Clear all session tokens
+        localStorage.removeItem('insurance_auth');
+        localStorage.removeItem('insurance_token');
+        localStorage.removeItem('insurance_user');
+        localStorage.removeItem('insurance_permissions');
         navigate('/login');
     };
 
@@ -62,19 +119,25 @@ const InsuranceNavbar: FC = () => {
                     {/* Vertical Divider */}
                     <div className="h-6 md:h-8 w-[1px] bg-gray-300 rounded-full"></div>
                     
-                    {/* Dummy Insurance Logo - Replace src with actual logo later */}
-                    <img
-                        src="/star-logo.svg"
-                        alt="Insurance Partner Logo"
-                        className="h-8 md:h-12 w-auto object-contain"
-                    />
+                    {/* Dynamic Insurance Logo fetched from DB */}
+                    {insuranceLogo ? (
+                        <img
+                            src={insuranceLogo}
+                            alt="Insurance Partner Logo"
+                            className="h-8 md:h-12 w-auto object-contain rounded-md"
+                        />
+                    ) : (
+                        <div className="h-8 md:h-10 w-8 md:w-10 rounded-full bg-purple-100 flex items-center justify-center text-[#5301ab] font-black text-xl">
+                            {insuranceName.charAt(0).toUpperCase()}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex items-center justify-end gap-3 lg:gap-6 flex-1 overflow-hidden">
                     <div className="hidden xl:flex items-center flex-1 justify-end overflow-hidden">
                         <nav className="flex items-center gap-1 bg-white/90 p-1.5 rounded-full border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-full">
-                            {navLinks.map((link) => {
-                                const isActive = location.pathname.includes(link.path);
+                            {visibleLinks.map((link) => {
+                                const isActive = location.pathname.startsWith(link.path);
                                 return (
                                     <Link
                                         key={link.name}
@@ -107,9 +170,9 @@ const InsuranceNavbar: FC = () => {
                         <div className="relative hidden lg:block">
                             <button
                                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0"
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0 font-bold"
                             >
-                                <FiUser className="w-5 h-5" />
+                                {insuranceName.charAt(0).toUpperCase()}
                             </button>
 
                             {/* Profile Dropdown */}
@@ -119,10 +182,10 @@ const InsuranceNavbar: FC = () => {
                                         className="fixed inset-0 z-40"
                                         onClick={() => setIsProfileMenuOpen(false)}
                                     ></div>
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                                        <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                                            <p className="text-[13px] font-bold text-gray-900 truncate">Insurance Admin</p>
-                                            <p className="text-[11px] font-medium text-gray-500 truncate">admin@zorocare.com</p>
+                                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="px-4 py-3 border-b border-gray-50 mb-1">
+                                            <p className="text-[14px] font-bold text-gray-900 truncate">{insuranceName}</p>
+                                            <p className="text-[12px] font-medium text-gray-500 truncate">{insuranceEmail}</p>
                                         </div>
                                         <button
                                             onClick={handleLogout}
@@ -167,18 +230,22 @@ const InsuranceNavbar: FC = () => {
             >
                 {/* Mobile Menu Header with Co-Branded Logos */}
                 <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-white shrink-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 max-w-[75%]">
                         <img
                             src="/logo-stright.png"
                             alt="Zoro Care"
-                            className="h-6 w-auto object-contain"
+                            className="h-6 w-auto object-contain shrink-0"
                         />
-                        <div className="h-4 w-[1px] bg-gray-300 rounded-full"></div>
-                        <img
-                            src="/star-logo.svg"
-                            alt="Insurance Partner"
-                            className="h-6 w-auto object-contain"
-                        />
+                        <div className="h-4 w-[1px] bg-gray-300 rounded-full shrink-0"></div>
+                        {insuranceLogo ? (
+                            <img
+                                src={insuranceLogo}
+                                alt="Partner Logo"
+                                className="h-6 w-auto object-contain shrink-0 rounded-sm"
+                            />
+                        ) : (
+                            <span className="text-[12px] font-bold text-[#5301ab] truncate">{insuranceName}</span>
+                        )}
                     </div>
                     <button
                         onClick={() => setIsMobileMenuOpen(false)}
@@ -189,8 +256,8 @@ const InsuranceNavbar: FC = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-1.5 scroll-smooth">
-                    {navLinks.map((link) => {
-                        const isActive = location.pathname.includes(link.path);
+                    {visibleLinks.map((link) => {
+                        const isActive = location.pathname.startsWith(link.path);
                         return (
                             <Link
                                 key={`mobile-${link.name}`}
@@ -207,6 +274,10 @@ const InsuranceNavbar: FC = () => {
                 </div>
 
                 <div className="p-5 border-t border-gray-100 bg-gray-50/80 space-y-3 shrink-0">
+                    <div className="mb-4 pl-1">
+                        <p className="text-[13px] font-bold text-gray-900 truncate">{insuranceName}</p>
+                        <p className="text-[11px] font-medium text-gray-500 truncate">{insuranceEmail}</p>
+                    </div>
                     <button className="flex w-full items-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">
                         <MdSubscriptions className="w-5 h-5 text-gray-400" />
                         Subscriptions
