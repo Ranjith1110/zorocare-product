@@ -42,12 +42,6 @@ interface Broker {
   permissions: any;
 }
 
-interface OnboardStep {
-  id: number;
-  label: string;
-  active: boolean;
-}
-
 interface CredentialShareModalData {
   name: string;
   email: string;
