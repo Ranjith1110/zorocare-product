@@ -169,7 +169,6 @@ const SuperAdminUserHubCom: FC = () => {
 
     const handleCancel = () => {
         setViewMode('list');
-        setEditData(null);
         setSelectedUser(null);
         resetFormState();
     };
