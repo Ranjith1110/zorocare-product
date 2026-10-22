@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import type { FC, ReactNode } from 'react';
 import {
     FiUsers, FiShield, FiUserCheck, FiUserPlus, FiFileText,
-    FiSearch, FiFilter, FiDownload, FiEye, FiEdit2, FiMoreVertical,
-    FiChevronLeft, FiChevronRight, FiCheckCircle, FiX, FiKey, FiShare2, FiCopy, FiCheck,
-    FiPlus, FiArrowUpRight, FiXCircle, FiArrowLeft, FiGrid, FiTrash2,
+    FiSearch, FiDownload, FiEye, FiEdit2,
+    FiCheckCircle, FiX, FiKey, FiCopy, FiCheck,
+    FiPlus, FiClock, FiArrowLeft, FiGrid, FiTrash2,
     FiHeart, FiActivity, FiSmile, FiTruck, FiDollarSign, FiSmartphone, FiUploadCloud,
-    FiClock, FiMail, FiPhone, FiMapPin, FiSettings, FiCalendar
+    FiMail, FiPhone, FiMapPin, FiSettings
 } from 'react-icons/fi';
 import { TbBuildingCommunity } from 'react-icons/tb';
 
@@ -72,8 +72,7 @@ const AdminUserHubCom: FC = () => {
     const [viewMode, setViewMode] = useState<'list' | 'create' | 'edit' | 'workspace'>('list');
     const [creationMethod, setCreationMethod] = useState<'manual' | 'bulk'>('manual');
     const [usersList, setUsersList] = useState<UserData[]>([]);
-    const [editData, setEditData] = useState<UserData | null>(null);
-    
+
     // Workspace State
     const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
     const [activeTab, setActiveTab] = useState<UserTab>('dashboard');
@@ -171,7 +170,6 @@ const AdminUserHubCom: FC = () => {
 
     const handleCancel = () => {
         setViewMode('list');
-        setEditData(null);
         setSelectedUser(null);
         resetFormState();
     };
@@ -320,14 +318,6 @@ const AdminUserHubCom: FC = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const handleShareExisting = (user: UserData) => {
-        setShareData({
-            name: user.name,
-            email: user.email,
-            loginUrl: `${window.location.origin}/login`
-        });
-    };
-
     const filteredUsers = usersList.filter((u) =>
         u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         u.email.toLowerCase().includes(searchQuery.toLowerCase())
@@ -396,7 +386,7 @@ const AdminUserHubCom: FC = () => {
                 </div>
             )}
 
-            {/* Header */}
+            {/* Header Area */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 className="font-heading text-2xl lg:text-[28px] font-bold text-gray-900 leading-tight">
@@ -457,8 +447,8 @@ const AdminUserHubCom: FC = () => {
                                         <th className="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">User Name</th>
                                         <th className="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">Email</th>
                                         <th className="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">Phone</th>
-                                        <th className="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">User Type</th>
                                         <th className="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">Status</th>
+                                        <th className="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100">Joined Date</th>
                                         <th className="px-5 py-3.5 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100 text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -481,13 +471,13 @@ const AdminUserHubCom: FC = () => {
                                                 <td className="px-5 py-3.5 whitespace-nowrap text-[12px] font-medium text-gray-500">{user.email}</td>
                                                 <td className="px-5 py-3.5 whitespace-nowrap text-[12px] font-medium text-gray-500">{user.phone}</td>
                                                 <td className="px-5 py-3.5 whitespace-nowrap">
-                                                    <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold ${user.type === 'Corporate' ? 'bg-purple-100 text-[#5301ab]' : user.type === 'Insurance' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-700'}`}>{user.type}</span>
-                                                </td>
-                                                <td className="px-5 py-3.5 whitespace-nowrap">
                                                     <div className="flex items-center gap-1.5">
                                                         <span className={`w-2 h-2 rounded-full ${user.status === 'Active' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                                                         <span className={`text-[12px] font-bold ${user.status === 'Active' ? 'text-emerald-600' : 'text-red-600'}`}>{user.status}</span>
                                                     </div>
+                                                </td>
+                                                <td className="px-5 py-3.5 whitespace-nowrap text-[12px] font-medium text-gray-600">
+                                                    {new Date(user.created_at).toLocaleDateString()}
                                                 </td>
                                                 <td className="px-5 py-3.5 whitespace-nowrap">
                                                     <div className="flex items-center justify-center gap-2.5">
@@ -533,9 +523,8 @@ const AdminUserHubCom: FC = () => {
                                     <h4 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Quick Actions</h4>
                                     <div className="grid grid-cols-2 gap-3">
                                         <Button variant="secondary" onClick={() => handleWorkspaceClick(filteredUsers[0], 'dashboard')} className="!border-[#5301ab]/30 !bg-[#5301ab]/5 hover:!bg-[#5301ab]/10 !text-[12px] !text-[#5301ab]" icon={<FiGrid className="w-4 h-4" />}>Open Workspace</Button>
-                                        <Button variant="neutral" onClick={() => handleEditClick(filteredUsers[0])} className="!text-[12px]" icon={<FiEdit2 className="w-3.5 h-3.5 text-gray-500" />}>Edit Profile</Button>
+                                        <Button variant="neutral" onClick={() => handleEditClick(filteredUsers[0])} className="!text-[12px]" icon={<FiEdit2 className="w-4 h-4 text-gray-500" />}>Edit Profile</Button>
                                     </div>
-                                    <Button variant="danger" className="w-full !text-[12px]" icon={<FiXCircle className="w-3.5 h-3.5" />}>Deactivate User</Button>
                                 </div>
                             </>
                         ) : (
@@ -693,8 +682,8 @@ const AdminUserHubCom: FC = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 flex-1">
-                            {/* Column 1 */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 flex-1">
+                            {/* Column 1: Core Access */}
                             <div className="space-y-6">
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiGrid className="w-4 h-4 text-[#5301ab]" /> Dashboard</div>
@@ -709,48 +698,50 @@ const AdminUserHubCom: FC = () => {
                                     <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Smart Ring Access</span><ToggleSwitch checked={permissions.smartRing} onChange={(c) => handleToggle('smartRing', c)} theme="purple" /></div>
                                 </div>
                                 <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiShield className="w-4 h-4 text-[#5301ab]" /> Sponsored Services</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Sponsored Services</span><ToggleSwitch checked={permissions.sponsoredServices} onChange={(c) => handleToggle('sponsoredServices', c)} theme="purple" /></div>
-                                </div>
-                            </div>
-
-                            {/* Column 2 */}
-                            <div className="space-y-6">
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiActivity className="w-4 h-4 text-[#5301ab]" /> Healthcheckups</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Healthcheckups</span><ToggleSwitch checked={permissions.healthcheckups} onChange={(c) => handleToggle('healthcheckups', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiHeart className="w-4 h-4 text-[#5301ab]" /> Wellness Services</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Wellness Services</span><ToggleSwitch checked={permissions.wellnessServices} onChange={(c) => handleToggle('wellnessServices', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiFileText className="w-4 h-4 text-[#5301ab]" /> Care Programs</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Care Programs</span><ToggleSwitch checked={permissions.carePrograms} onChange={(c) => handleToggle('carePrograms', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiSmile className="w-4 h-4 text-[#5301ab]" /> Dental</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Dental</span><ToggleSwitch checked={permissions.dental} onChange={(c) => handleToggle('dental', c)} theme="purple" /></div>
-                                </div>
-                            </div>
-
-                            {/* Column 3 */}
-                            <div className="space-y-6">
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiEye className="w-4 h-4 text-[#5301ab]" /> Eye</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Eye</span><ToggleSwitch checked={permissions.eye} onChange={(c) => handleToggle('eye', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiEye className="w-4 h-4 text-[#5301ab]" /> Optical</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Optical</span><ToggleSwitch checked={permissions.optical} onChange={(c) => handleToggle('optical', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiTruck className="w-4 h-4 text-[#5301ab]" /> Ambulance</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Ambulance</span><ToggleSwitch checked={permissions.ambulance} onChange={(c) => handleToggle('ambulance', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
                                     <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiDollarSign className="w-4 h-4 text-[#5301ab]" /> Subscription</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Subscription</span><ToggleSwitch checked={permissions.subscription} onChange={(c) => handleToggle('subscription', c)} theme="purple" /></div>
+                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Subscription Access</span><ToggleSwitch checked={permissions.subscription} onChange={(c) => handleToggle('subscription', c)} theme="purple" /></div>
+                                </div>
+                            </div>
+
+                            {/* Column 2 & 3: Sponsored Services Master Block */}
+                            <div className="lg:col-span-2 bg-gray-50/50 p-5 rounded-2xl border border-gray-100 h-fit">
+                                <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[14px]">
+                                        <FiShield className="w-5 h-5 text-[#5301ab]" /> Sponsored Services
+                                    </div>
+                                    <ToggleSwitch checked={permissions.sponsoredServices} onChange={(c) => handleToggle('sponsoredServices', c)} theme="purple" />
+                                </div>
+
+                                {/* These sub-services only work/show clearly if the master toggle is ON */}
+                                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 transition-opacity duration-300 ${!permissions.sponsoredServices ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiActivity className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Healthcheckups</span></div>
+                                        <ToggleSwitch checked={permissions.healthcheckups} onChange={(c) => handleToggle('healthcheckups', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiHeart className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Wellness Services</span></div>
+                                        <ToggleSwitch checked={permissions.wellnessServices} onChange={(c) => handleToggle('wellnessServices', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiFileText className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Care Programs</span></div>
+                                        <ToggleSwitch checked={permissions.carePrograms} onChange={(c) => handleToggle('carePrograms', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiSmile className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Dental</span></div>
+                                        <ToggleSwitch checked={permissions.dental} onChange={(c) => handleToggle('dental', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiEye className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Eye</span></div>
+                                        <ToggleSwitch checked={permissions.eye} onChange={(c) => handleToggle('eye', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiEye className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Optical</span></div>
+                                        <ToggleSwitch checked={permissions.optical} onChange={(c) => handleToggle('optical', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiTruck className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Ambulance</span></div>
+                                        <ToggleSwitch checked={permissions.ambulance} onChange={(c) => handleToggle('ambulance', c)} theme="purple" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -768,21 +759,21 @@ const AdminUserHubCom: FC = () => {
             {/* VERTICAL PORTAL WORKSPACE VIEW */}
             {viewMode === 'workspace' && selectedUser && (
                 <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start animate-in fade-in slide-in-from-right-8 duration-500">
-                    
+
                     {/* Left Sidebar: User Profile & Nav */}
                     <div className="xl:col-span-3 flex flex-col gap-5">
-                        
+
                         {/* Profile Card */}
                         <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-6 relative overflow-hidden">
                             <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-10 blur-2xl bg-purple-600"></div>
-                            
+
                             <div className="flex flex-col items-center text-center relative z-10">
                                 <div className="w-20 h-20 rounded-[1.5rem] flex items-center justify-center text-white text-3xl font-black shadow-lg bg-purple-600 mb-4">
                                     {selectedUser.name.charAt(0).toUpperCase()}
                                 </div>
                                 <h3 className="font-heading font-bold text-gray-900 text-lg leading-tight mb-1">{selectedUser.name}</h3>
                                 <p className="text-[12px] font-medium text-[#5301ab] bg-[#5301ab]/5 px-3 py-1 rounded-md mb-4 border border-[#5301ab]/10">{selectedUser.type} User</p>
-                                
+
                                 <div className="w-full space-y-2.5 text-left border-t border-gray-100 pt-4 mt-2">
                                     <div className="flex items-center gap-3 text-[12px] text-gray-600">
                                         <div className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 shrink-0"><FiMail className="w-3.5 h-3.5" /></div>
@@ -796,10 +787,6 @@ const AdminUserHubCom: FC = () => {
                                         <div className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 shrink-0"><FiMapPin className="w-3.5 h-3.5" /></div>
                                         <span className="truncate">{selectedUser.location || 'Bengaluru, India'}</span>
                                     </div>
-                                    <div className="flex items-center gap-3 text-[12px] text-gray-600 pt-1">
-                                        <div className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 shrink-0"><TbBuildingCommunity className="w-3.5 h-3.5" /></div>
-                                        <span className="truncate font-semibold">{selectedUser.organization}</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -807,33 +794,33 @@ const AdminUserHubCom: FC = () => {
                         {/* Navigation Menu Card */}
                         <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] p-3">
                             <nav className="flex flex-col gap-1">
-                                <button 
-                                    onClick={() => setActiveTab('dashboard')} 
+                                <button
+                                    onClick={() => setActiveTab('dashboard')}
                                     className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-300 ${activeTab === 'dashboard' ? 'bg-[#5301ab] text-white shadow-md shadow-[#5301ab]/20' : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'}`}
                                 >
                                     <FiGrid className="w-4 h-4" /> Dashboard Overview
                                 </button>
-                                <button 
-                                    onClick={() => setActiveTab('dependents')} 
+                                <button
+                                    onClick={() => setActiveTab('dependents')}
                                     className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-300 ${activeTab === 'dependents' ? 'bg-[#5301ab] text-white shadow-md shadow-[#5301ab]/20' : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'}`}
                                 >
                                     <FiUsers className="w-4 h-4" /> Dependents
                                 </button>
-                                <button 
-                                    onClick={() => setActiveTab('health_records')} 
+                                <button
+                                    onClick={() => setActiveTab('health_records')}
                                     className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-300 ${activeTab === 'health_records' ? 'bg-[#5301ab] text-white shadow-md shadow-[#5301ab]/20' : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'}`}
                                 >
                                     <FiFileText className="w-4 h-4" /> Health Records
                                 </button>
-                                <button 
-                                    onClick={() => setActiveTab('smart_ring')} 
+                                <button
+                                    onClick={() => setActiveTab('smart_ring')}
                                     className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-300 ${activeTab === 'smart_ring' ? 'bg-[#5301ab] text-white shadow-md shadow-[#5301ab]/20' : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'}`}
                                 >
                                     <FiSmartphone className="w-4 h-4" /> Smart Ring Data
                                 </button>
                                 <div className="h-px bg-gray-100 my-2 mx-2"></div>
-                                <button 
-                                    onClick={() => setActiveTab('settings')} 
+                                <button
+                                    onClick={() => setActiveTab('settings')}
                                     className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-300 ${activeTab === 'settings' ? 'bg-[#5301ab] text-white shadow-md shadow-[#5301ab]/20' : 'text-gray-600 hover:bg-gray-50 hover:text-[#5301ab]'}`}
                                 >
                                     <FiSettings className="w-4 h-4" /> Account Settings
@@ -844,7 +831,7 @@ const AdminUserHubCom: FC = () => {
 
                     {/* Right Main Content Area */}
                     <div className="xl:col-span-9 bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)] min-h-[600px] flex flex-col relative overflow-hidden">
-                        
+
                         {/* Dynamic Header Based on Tab */}
                         <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
                             <div>
@@ -867,7 +854,7 @@ const AdminUserHubCom: FC = () => {
 
                         {/* Tab Content Area */}
                         <div className="p-6 flex-1 bg-white">
-                            
+
                             {/* 1. Dashboard Tab */}
                             {activeTab === 'dashboard' && (
                                 <div className="space-y-6 animate-in fade-in duration-400">
@@ -895,7 +882,7 @@ const AdminUserHubCom: FC = () => {
                                     </div>
                                     <div className="border border-gray-100 rounded-2xl p-6 shadow-sm">
                                         <h3 className="font-bold text-gray-900 mb-5 flex items-center gap-2">
-                                            <FiClock className="w-4 h-4 text-[#5301ab]"/> Recent Platform Activity
+                                            <FiClock className="w-4 h-4 text-[#5301ab]" /> Recent Platform Activity
                                         </h3>
                                         <div className="space-y-5 relative before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
                                             <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
@@ -947,7 +934,7 @@ const AdminUserHubCom: FC = () => {
                                                     <td className="px-5 py-4 text-[12px] font-medium text-gray-600">Mother</td>
                                                     <td className="px-5 py-4 text-[12px] font-medium text-gray-600">58 Years</td>
                                                     <td className="px-5 py-4 text-center">
-                                                        <Button variant="neutral" className="!p-0 w-8 h-8 text-gray-400 hover:text-[#5301ab] bg-white shadow-sm" icon={<FiEye className="w-4 h-4"/>}>{null}</Button>
+                                                        <Button variant="neutral" className="!p-0 w-8 h-8 text-gray-400 hover:text-[#5301ab] bg-white shadow-sm" icon={<FiEye className="w-4 h-4" />}>{null}</Button>
                                                     </td>
                                                 </tr>
                                                 <tr className="hover:bg-gray-50/80 transition-colors">
@@ -955,7 +942,7 @@ const AdminUserHubCom: FC = () => {
                                                     <td className="px-5 py-4 text-[12px] font-medium text-gray-600">Father</td>
                                                     <td className="px-5 py-4 text-[12px] font-medium text-gray-600">62 Years</td>
                                                     <td className="px-5 py-4 text-center">
-                                                        <Button variant="neutral" className="!p-0 w-8 h-8 text-gray-400 hover:text-[#5301ab] bg-white shadow-sm" icon={<FiEye className="w-4 h-4"/>}>{null}</Button>
+                                                        <Button variant="neutral" className="!p-0 w-8 h-8 text-gray-400 hover:text-[#5301ab] bg-white shadow-sm" icon={<FiEye className="w-4 h-4" />}>{null}</Button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -990,7 +977,7 @@ const AdminUserHubCom: FC = () => {
                                                     <td className="px-5 py-4 text-[12px] font-medium text-gray-600">12 May 2024</td>
                                                     <td className="px-5 py-4 text-[12px] font-medium text-gray-600">Apollo Diagnostics</td>
                                                     <td className="px-5 py-4 text-center">
-                                                        <Button variant="neutral" className="!py-1.5 !px-3 !text-[11px] bg-white shadow-sm border-blue-100 text-blue-600 hover:bg-blue-50" icon={<FiDownload className="w-3.5 h-3.5"/>}>Download</Button>
+                                                        <Button variant="neutral" className="!py-1.5 !px-3 !text-[11px] bg-white shadow-sm border-blue-100 text-blue-600 hover:bg-blue-50" icon={<FiDownload className="w-3.5 h-3.5" />}>Download</Button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -1020,7 +1007,7 @@ const AdminUserHubCom: FC = () => {
                                             <Input label="Phone Number" defaultValue={selectedUser.phone} theme="purple" className="bg-white" />
                                             <Select label="Account Type" defaultValue={selectedUser.type} options={['Direct', 'Corporate', 'Insurance']} theme="purple" className="bg-white" />
                                         </div>
-                                        
+
                                         <div className="border-t border-gray-200 pt-6 mt-2">
                                             <h4 className="font-bold text-[14px] text-gray-900 mb-4">Platform Access Status</h4>
                                             <div className="flex items-center justify-between bg-white border border-gray-200 p-5 rounded-xl shadow-sm">
