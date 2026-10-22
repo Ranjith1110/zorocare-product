@@ -91,7 +91,7 @@ type CorporateTab = 'dashboard' | 'employees' | 'checkups' | 'reports' | 'settin
 const AdminCorporateHubCom: FC = () => {
     const [viewMode, setViewMode] = useState<'list' | 'create' | 'edit' | 'workspace'>('list');
     const [corporates, setCorporates] = useState<Corporate[]>([]);
-    const [editData, setEditData] = useState<Corporate | null>(null);
+    const [, setEditData] = useState<Corporate | null>(null);
 
     // Workspace States
     const [selectedCorporate, setSelectedCorporate] = useState<Corporate | null>(null);

@@ -71,7 +71,6 @@ const SuperAdminUserHubCom: FC = () => {
     const [viewMode, setViewMode] = useState<'list' | 'create' | 'edit' | 'workspace'>('list');
     const [creationMethod, setCreationMethod] = useState<'manual' | 'bulk'>('manual');
     const [usersList, setUsersList] = useState<UserData[]>([]);
-    const [editData, setEditData] = useState<UserData | null>(null);
 
     // Workspace State
     const [selectedUser, setSelectedUser] = useState<UserData | null>(null);

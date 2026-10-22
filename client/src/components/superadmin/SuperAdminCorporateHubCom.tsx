@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import type { FC, ReactNode } from 'react';
 import {
-  FiShield, FiUsers, FiFileText, FiDollarSign,
-  FiSearch, FiFilter, FiDownload, FiEye, FiEdit2, FiMoreVertical, FiChevronRight, FiPlus, FiArrowUpRight,
-  FiXCircle, FiBarChart2, FiUploadCloud, FiClock, FiArrowLeft, FiCheckCircle, FiHeart,
-  FiGrid, FiActivity, FiFolder, FiSmile, FiTruck, FiKey, FiShare2, FiCopy, FiCheck, FiX, FiTrash2
+  FiShield, FiUsers, FiFileText,
+  FiSearch, FiFilter, FiDownload, FiEye, FiEdit2, FiPlus, FiArrowUpRight,
+  FiXCircle, FiUploadCloud, FiClock, FiArrowLeft, FiCheckCircle, FiHeart,
+  FiGrid, FiActivity, FiFolder, FiSmile, FiKey, FiShare2, FiCopy, FiCheck, FiX, FiTrash2
 } from 'react-icons/fi';
 import { TbBuildingCommunity } from "react-icons/tb";
 
 import Button from '../common/Button';
 import Input from '../common/Input';
-import Select from '../common/Select';
 import ToggleSwitch from '../common/ToggleSwitch';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -351,15 +350,6 @@ const SuperAdminCorporateHubCom: FC = () => {
   const uploadHistoryData: UploadHistory[] = [
     { id: 'UPL-001', date: '15 May 2024', time: '10:30 AM', file: 'employees_batch1.csv', total: 50, success: 48, failed: 2, user: 'Admin' },
     { id: 'UPL-002', date: '10 May 2024', time: '02:15 PM', file: 'new_hires_may.xlsx', total: 12, success: 12, failed: 0, user: 'Admin' },
-  ];
-
-  const onboardSteps = [
-    { id: 1, label: 'Basic Information', active: true },
-    { id: 2, label: 'Contact Details', active: false },
-    { id: 3, label: 'Address Details', active: false },
-    { id: 4, label: 'Insurance & Broker', active: false },
-    { id: 5, label: 'Plan Details', active: false },
-    { id: 6, label: 'Review & Submit', active: false }
   ];
 
   return (
