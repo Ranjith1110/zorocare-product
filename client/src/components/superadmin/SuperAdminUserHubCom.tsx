@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import type { FC, ReactNode } from 'react';
 import {
     FiUsers, FiShield, FiUserCheck, FiUserPlus, FiFileText,
-    FiSearch, FiFilter, FiDownload, FiEye, FiEdit2, FiMoreVertical,
-    FiChevronLeft, FiChevronRight, FiCheckCircle, FiX, FiKey, FiShare2, FiCopy, FiCheck,
-    FiPlus, FiArrowUpRight, FiXCircle, FiArrowLeft, FiGrid, FiTrash2,
+    FiSearch, FiDownload, FiEye, FiEdit2, FiCheckCircle, FiX, FiKey, FiShare2, FiCopy, FiCheck,
+    FiPlus, FiXCircle, FiArrowLeft, FiGrid, FiTrash2,
     FiHeart, FiActivity, FiSmile, FiTruck, FiDollarSign, FiSmartphone, FiUploadCloud,
-    FiClock, FiMail, FiPhone, FiMapPin, FiSettings, FiCalendar
+    FiClock, FiMail, FiPhone, FiMapPin, FiSettings,
 } from 'react-icons/fi';
 import { TbBuildingCommunity } from 'react-icons/tb';
 
@@ -695,8 +694,8 @@ const SuperAdminUserHubCom: FC = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 flex-1">
-                            {/* Column 1 */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 flex-1">
+                            {/* Column 1: Core Access */}
                             <div className="space-y-6">
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiGrid className="w-4 h-4 text-[#5301ab]" /> Dashboard</div>
@@ -711,48 +710,49 @@ const SuperAdminUserHubCom: FC = () => {
                                     <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Smart Ring Access</span><ToggleSwitch checked={permissions.smartRing} onChange={(c) => handleToggle('smartRing', c)} theme="purple" /></div>
                                 </div>
                                 <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiShield className="w-4 h-4 text-[#5301ab]" /> Sponsored Services</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Sponsored Services</span><ToggleSwitch checked={permissions.sponsoredServices} onChange={(c) => handleToggle('sponsoredServices', c)} theme="purple" /></div>
-                                </div>
-                            </div>
-
-                            {/* Column 2 */}
-                            <div className="space-y-6">
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiActivity className="w-4 h-4 text-[#5301ab]" /> Healthcheckups</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Healthcheckups</span><ToggleSwitch checked={permissions.healthcheckups} onChange={(c) => handleToggle('healthcheckups', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiHeart className="w-4 h-4 text-[#5301ab]" /> Wellness Services</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Wellness Services</span><ToggleSwitch checked={permissions.wellnessServices} onChange={(c) => handleToggle('wellnessServices', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiFileText className="w-4 h-4 text-[#5301ab]" /> Care Programs</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Care Programs</span><ToggleSwitch checked={permissions.carePrograms} onChange={(c) => handleToggle('carePrograms', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiSmile className="w-4 h-4 text-[#5301ab]" /> Dental</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Dental</span><ToggleSwitch checked={permissions.dental} onChange={(c) => handleToggle('dental', c)} theme="purple" /></div>
-                                </div>
-                            </div>
-
-                            {/* Column 3 */}
-                            <div className="space-y-6">
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiEye className="w-4 h-4 text-[#5301ab]" /> Eye</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Eye</span><ToggleSwitch checked={permissions.eye} onChange={(c) => handleToggle('eye', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiEye className="w-4 h-4 text-[#5301ab]" /> Optical</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Optical</span><ToggleSwitch checked={permissions.optical} onChange={(c) => handleToggle('optical', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiTruck className="w-4 h-4 text-[#5301ab]" /> Ambulance</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Ambulance</span><ToggleSwitch checked={permissions.ambulance} onChange={(c) => handleToggle('ambulance', c)} theme="purple" /></div>
-                                </div>
-                                <div className="space-y-3">
                                     <div className="flex items-center gap-2 font-bold text-gray-900 text-[13px] mb-2"><FiDollarSign className="w-4 h-4 text-[#5301ab]" /> Subscription</div>
-                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Subscription</span><ToggleSwitch checked={permissions.subscription} onChange={(c) => handleToggle('subscription', c)} theme="purple" /></div>
+                                    <div className="flex items-center justify-between pl-1"><span className="text-[12px] text-gray-600 font-medium">Subscription Access</span><ToggleSwitch checked={permissions.subscription} onChange={(c) => handleToggle('subscription', c)} theme="purple" /></div>
+                                </div>
+                            </div>
+
+                            {/* Column 2 & 3: Sponsored Services */}
+                            <div className="lg:col-span-2 bg-gray-50/50 p-5 rounded-2xl border border-gray-100 h-fit">
+                                <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-5">
+                                    <div className="flex items-center gap-2 font-bold text-gray-900 text-[14px]">
+                                        <FiShield className="w-5 h-5 text-[#5301ab]" /> Sponsored Services
+                                    </div>
+                                    <ToggleSwitch checked={permissions.sponsoredServices} onChange={(c) => handleToggle('sponsoredServices', c)} theme="purple" />
+                                </div>
+
+                                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 transition-opacity duration-300 ${!permissions.sponsoredServices ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiActivity className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Healthcheckups</span></div>
+                                        <ToggleSwitch checked={permissions.healthcheckups} onChange={(c) => handleToggle('healthcheckups', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiHeart className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Wellness Services</span></div>
+                                        <ToggleSwitch checked={permissions.wellnessServices} onChange={(c) => handleToggle('wellnessServices', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiFileText className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Care Programs</span></div>
+                                        <ToggleSwitch checked={permissions.carePrograms} onChange={(c) => handleToggle('carePrograms', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiSmile className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Dental</span></div>
+                                        <ToggleSwitch checked={permissions.dental} onChange={(c) => handleToggle('dental', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiEye className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Eye</span></div>
+                                        <ToggleSwitch checked={permissions.eye} onChange={(c) => handleToggle('eye', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiEye className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Optical</span></div>
+                                        <ToggleSwitch checked={permissions.optical} onChange={(c) => handleToggle('optical', c)} theme="purple" />
+                                    </div>
+                                    <div className="flex items-center justify-between pl-1">
+                                        <div className="flex items-center gap-2"><FiTruck className="w-4 h-4 text-gray-500" /><span className="text-[12px] text-gray-700 font-medium">Ambulance</span></div>
+                                        <ToggleSwitch checked={permissions.ambulance} onChange={(c) => handleToggle('ambulance', c)} theme="purple" />
+                                    </div>
                                 </div>
                             </div>
                         </div>

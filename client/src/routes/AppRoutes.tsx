@@ -34,7 +34,7 @@ import AdminServiceHub from '../pages/admin/AdminServiceHub';
 // User Pages
 import UserDashboard from '../pages/user/UserDashboard';
 import UserMyBenefits from '../pages/user/UserMyBenefits';
-import UserServices from '../pages/user/UserServices';
+import UserSponsoredServices from '../pages/user/UserSponsoredServices';
 import UserMyHealth from '../pages/user/UserMyHealth';
 import UserBookings from '../pages/user/UserBookings';
 import UserHistory from '../pages/user/UserHistory';
@@ -144,7 +144,7 @@ export const AppRoutes: FC = () => {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<UserDashboard />} />
         <Route path="benefits" element={<UserMyBenefits />} />
-        <Route path="services" element={<UserServices />} />
+        <Route path="sponsored-services" element={<UserSponsoredServices />} />
         <Route path="health" element={<UserMyHealth />} />
         <Route path="bookings" element={<UserBookings />} />
         <Route path="history" element={<UserHistory />} />

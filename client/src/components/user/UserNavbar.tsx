@@ -1,31 +1,97 @@
 import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FiBell, FiMenu, FiX, FiLogOut } from 'react-icons/fi';
+import { FiBell, FiUser, FiMenu, FiX, FiLogOut } from 'react-icons/fi';
 import { MdSubscriptions } from "react-icons/md";
 
 interface NavLink {
     name: string;
     path: string;
+    permissionKeys?: string[]; // Array to allow matching if ANY of the sub-permissions are true
 }
 
 const UserNavbar: FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    
+    // Dynamic User Data
+    const [userName, setUserName] = useState('User');
+    const [userOrg, setUserOrg] = useState('Individual');
+    const [visibleLinks, setVisibleLinks] = useState<NavLink[]>([]);
+
     const location = useLocation();
     const navigate = useNavigate();
 
-    const navLinks: NavLink[] = [
-        { name: 'Dashboard', path: '/user/dashboard' },
-        { name: 'My Benefits', path: '/user/benefits' },
-        { name: 'Services', path: '/user/services' },
-        { name: 'My Health', path: '/user/health' },
-        { name: 'My Bookings', path: '/user/bookings' },
-        { name: 'History', path: '/user/history' },
+    // Master list of User routes mapped to SuperAdmin permission keys
+    const allNavLinks: NavLink[] = [
+        { name: 'Dashboard', path: '/user/dashboard', permissionKeys: ['viewDashboard'] },
+        { name: 'Dependents', path: '/user/dependents', permissionKeys: ['dependent'] },
+        { name: 'Smart Ring', path: '/user/smart-ring', permissionKeys: ['smartRing'] },
+        // Sponsored Services acts as a parent for all health/wellness/care specific permissions
+        { 
+            name: 'Sponsored Services', 
+            path: '/user/sponsored-services', 
+            permissionKeys: [
+                'sponsoredServices', 
+                'healthcheckups', 
+                'wellnessServices', 
+                'carePrograms', 
+                'dental', 
+                'eye', 
+                'optical', 
+                'ambulance'
+            ] 
+        },
+        { name: 'Subscription', path: '/user/subscription', permissionKeys: ['subscription'] },
+        { name: 'History', path: '/user/history' }, // History remains unprotected
     ];
 
+    useEffect(() => {
+        const isAuth = localStorage.getItem('user_auth') === 'true';
+
+        if (isAuth) {
+            // 1. Resolve Profile Data from LocalStorage
+            const storedUser = localStorage.getItem('user_data');
+            if (storedUser) {
+                try {
+                    const parsedUser = JSON.parse(storedUser);
+                    setUserName(parsedUser.name || 'User');
+                    setUserOrg(parsedUser.organization || 'Individual');
+                } catch (e) {
+                    console.error('Error parsing user data', e);
+                }
+            }
+
+            // 2. Resolve Dynamic Permissions toggled by Super Admin
+            let permissions: any = {};
+            const storedPerms = localStorage.getItem('user_permissions');
+            if (storedPerms) {
+                try {
+                    permissions = JSON.parse(storedPerms);
+                } catch (e) {
+                    console.error('Error parsing user permissions', e);
+                }
+            }
+
+            // 3. Filter Navigation Links dynamically
+            const filteredLinks = allNavLinks.filter(link => {
+                if (!link.permissionKeys || link.permissionKeys.length === 0) return true; 
+                // Displays the menu tab if ANY associated permission toggle is true
+                return link.permissionKeys.some(key => permissions[key] === true);
+            });
+
+            setVisibleLinks(filteredLinks);
+        } else {
+            setVisibleLinks([]);
+        }
+    }, [location.pathname]);
+
     const handleLogout = () => {
+        // Clear all session tokens securely
         localStorage.removeItem('user_auth');
+        localStorage.removeItem('user_token');
+        localStorage.removeItem('user_data');
+        localStorage.removeItem('user_permissions');
         navigate('/login');
     };
 
@@ -59,8 +125,8 @@ const UserNavbar: FC = () => {
                 <div className="flex items-center justify-end gap-3 lg:gap-6 flex-1 overflow-hidden">
                     <div className="hidden lg:flex items-center flex-1 justify-end overflow-hidden">
                         <nav className="flex items-center gap-1 bg-white/90 p-1.5 rounded-full border border-gray-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-full">
-                            {navLinks.map((link) => {
-                                const isActive = location.pathname.includes(link.path);
+                            {visibleLinks.map((link) => {
+                                const isActive = location.pathname.startsWith(link.path);
                                 return (
                                     <Link
                                         key={link.name}
@@ -93,9 +159,9 @@ const UserNavbar: FC = () => {
                         <div className="relative hidden lg:block">
                             <button
                                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0 overflow-hidden"
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#5301ab] to-[#7315e0] text-white shadow-sm transition-opacity hover:opacity-90 shrink-0 font-bold text-lg"
                             >
-                                <img src="https://i.pravatar.cc/300?img=11" alt="Arjun Kumar" className="w-full h-full object-cover" />
+                                {userName ? userName.charAt(0).toUpperCase() : <FiUser className="w-5 h-5" />}
                             </button>
 
                             {/* Profile Dropdown */}
@@ -105,10 +171,10 @@ const UserNavbar: FC = () => {
                                         className="fixed inset-0 z-40"
                                         onClick={() => setIsProfileMenuOpen(false)}
                                     ></div>
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                                        <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                                            <p className="text-[13px] font-bold text-gray-900 truncate">Arjun Kumar</p>
-                                            <p className="text-[11px] font-medium text-gray-500 truncate">Innova Technologies</p>
+                                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg shadow-[#5301ab]/10 border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                                        <div className="px-4 py-3 border-b border-gray-50 mb-1">
+                                            <p className="text-[14px] font-bold text-gray-900 truncate">{userName}</p>
+                                            <p className="text-[12px] font-medium text-gray-500 truncate">{userOrg}</p>
                                         </div>
                                         <button
                                             onClick={handleLogout}
@@ -166,8 +232,8 @@ const UserNavbar: FC = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-1.5 scroll-smooth">
-                    {navLinks.map((link) => {
-                        const isActive = location.pathname.includes(link.path);
+                    {visibleLinks.map((link) => {
+                        const isActive = location.pathname.startsWith(link.path);
                         return (
                             <Link
                                 key={`mobile-${link.name}`}
@@ -185,10 +251,12 @@ const UserNavbar: FC = () => {
 
                 <div className="p-5 border-t border-gray-100 bg-gray-50/80 space-y-3 shrink-0">
                     <div className="flex items-center gap-3 mb-4 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
-                        <img src="https://i.pravatar.cc/300?img=11" alt="User" className="w-10 h-10 rounded-full object-cover" />
+                        <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-[#5301ab] font-bold text-lg">
+                            {userName ? userName.charAt(0).toUpperCase() : 'U'}
+                        </div>
                         <div>
-                            <p className="text-[14px] font-bold text-gray-900">Arjun Kumar</p>
-                            <p className="text-[11px] font-medium text-gray-500">Innova Technologies</p>
+                            <p className="text-[14px] font-bold text-gray-900 truncate">{userName}</p>
+                            <p className="text-[11px] font-medium text-gray-500 truncate">{userOrg}</p>
                         </div>
                     </div>
                     <button className="flex w-full items-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-[14px] font-bold text-gray-700 shadow-sm border border-gray-200 hover:text-[#5301ab] transition-colors">

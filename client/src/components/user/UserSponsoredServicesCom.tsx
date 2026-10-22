@@ -24,7 +24,7 @@ interface FeaturedService {
     sponsored: boolean;
 }
 
-const UserServicesCom: FC = () => {
+const UserSponsoredServicesCom: FC = () => {
     const [activeCategory, setActiveCategory] = useState('All Services');
 
     const categories = [
@@ -387,4 +387,4 @@ const UserServicesCom: FC = () => {
     );
 };
 
-export default UserServicesCom;
+export default UserSponsoredServicesCom;

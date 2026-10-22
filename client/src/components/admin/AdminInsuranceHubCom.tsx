@@ -336,15 +336,6 @@ const AdminInsuranceHubCom: FC = () => {
     { title: 'Total Policies', value: brokers.reduce((acc, b) => acc + (b.policies_sold || 0), 0).toString(), subtitle: 'Across all brokers', icon: <FiUsers className="w-5 h-5" />, color: 'text-blue-500', bg: 'bg-blue-50' },
   ];
 
-  const onboardSteps: OnboardStep[] = [
-    { id: 1, label: 'Basic Information', active: true },
-    { id: 2, label: 'Contact Details', active: false },
-    { id: 3, label: 'Business Details', active: false },
-    { id: 4, label: 'Documents', active: false },
-    { id: 5, label: 'Bank Details', active: false },
-    { id: 6, label: 'Review & Submit', active: false }
-  ];
-
   return (
     <div className="w-full space-y-6 animate-in fade-in duration-500 pb-10">
 

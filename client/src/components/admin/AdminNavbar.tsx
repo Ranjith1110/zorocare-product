@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FiBell, FiUser, FiMenu, FiX, FiLogOut } from 'react-icons/fi';
+import { FiBell, FiMenu, FiX, FiLogOut } from 'react-icons/fi';
 import { MdSubscriptions } from "react-icons/md";
 
 interface NavLink {

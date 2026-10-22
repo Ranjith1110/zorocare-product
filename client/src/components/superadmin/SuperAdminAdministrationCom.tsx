@@ -636,21 +636,14 @@ const SuperAdminAdministrationCom: FC = () => {
               />
 
               <div className="space-y-2 pt-2">
-                <label className="text-[12px] font-semibold text-gray-700">Role Selection</label>
-                <div className="flex flex-wrap gap-4">
-                  {['Admin', 'Staff', 'Viewer'].map((role) => (
-                    <label key={role} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="role"
-                        checked={formData.role === role}
-                        onChange={() => setFormData({ ...formData, role })}
-                        className="w-4 h-4 text-[#5301ab] focus:ring-[#5301ab] border-gray-300"
-                      />
-                      <span className="text-[13px] font-medium text-gray-700">{role}</span>
-                    </label>
-                  ))}
-                </div>
+                <Input
+                  label="Role Selection"
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  required
+                  placeholder="Enter role (e.g., Admin, Staff, Editor)"
+                  theme="purple"
+                />
               </div>
 
               <div className="space-y-2 pt-2 mb-2">
