@@ -49,7 +49,6 @@ interface CredentialShareModalData {
   loginUrl: string;
 }
 
-// Exactly matching the required permissions (Dental, Eye, Optical, Ambulance, Subscription removed)
 const defaultPermissions = {
   viewDashboard: true,
   createCorporate: true,
