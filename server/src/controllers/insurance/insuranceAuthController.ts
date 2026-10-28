@@ -3,10 +3,17 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { getBrokerForAuthDb } from '../../models/insurance/insuranceAuthModel.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'zorocare_superadmin_secret_key'; 
+// Removed the fallback. The server will strictly use the .env variable.
+const JWT_SECRET = process.env.JWT_SECRET as string; 
 
 export const insuranceLogin = async (req: Request, res: Response): Promise<void> => {
     try {
+        if (!JWT_SECRET) {
+            console.error('FATAL ERROR: JWT_SECRET is not defined in the environment.');
+            res.status(500).json({ success: false, message: 'Server configuration error.' });
+            return;
+        }
+
         const { email, password } = req.body;
 
         if (!email || !password) {
